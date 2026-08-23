@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="he-IL" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Visuelle Mikdash-Stilreferenz: Baukarte 31, historische Aufstiegsstraße vom Schiloach zum Tempelberg.">
+  <title>מִקְדָּשׁ · Baukarte 31 · דֶּרֶךְ הָעוֹלִים</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&amp;family=Frank+Ruhl+Libre:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink:#070909;
+      --night:#0b0e0e;
+      --panel:#101515;
+      --panel-2:#131a19;
+      --ivory:#f2ead9;
+      --sand:#d5c6aa;
+      --muted:#a89f8e;
+      --faint:#6f746d;
+      --stone:#b8925d;
+      --stone-light:#d7bd87;
+      --bronze:#8f653d;
+      --water:#6e9eaa;
+      --water-light:#9ec2c7;
+      --rambam:#cfb36d;
+      --ramchal:#c8c4b8;
+      --arch:#6e9eaa;
+      --danger:#c96b62;
+      --success:#7e9d7c;
+      --line:rgba(213,188,135,.20);
+      --line-strong:rgba(213,188,135,.38);
+      --shadow:0 26px 90px rgba(0,0,0,.34);
+      --serif:'EB Garamond', Georgia, serif;
+      --display:'Cormorant Garamond', Georgia, serif;
+      --hebrew:'Frank Ruhl Libre','Noto Serif Hebrew',serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:var(--ink)}
+    body{margin:0;background:var(--ink);color:var(--sand);font-family:var(--serif);font-size:17px;line-height:1.68}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:
+      radial-gradient(ellipse at 14% 8%,rgba(184,146,93,.14),transparent 35%),
+      radial-gradient(ellipse at 82% 35%,rgba(110,158,170,.09),transparent 34%),
+      linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.009) 1px,transparent 1px);
+      background-size:auto,auto,42px 42px,42px 42px}
+    a{color:inherit}
+    .skip{position:absolute;left:-9999px;top:auto}.skip:focus{left:16px;top:16px;z-index:100;background:var(--ivory);color:var(--ink);padding:8px 12px}
+    .topbar{position:sticky;top:0;z-index:60;height:58px;display:flex;align-items:stretch;background:rgba(7,9,9,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.18)}
+    .brand{display:flex;align-items:center;gap:12px;padding:0 22px;border-right:1px solid var(--line);text-decoration:none;white-space:nowrap}
+    .brand-mark{width:23px;height:23px;border:1px solid var(--stone-light);transform:rotate(45deg);position:relative}.brand-mark::after{content:"";position:absolute;inset:5px;border:1px solid var(--water);background:var(--ink)}
+    .brand-text{font-family:var(--hebrew);font-weight:700;color:var(--ivory);font-size:1.05rem}
+    .nav{display:flex;overflow:auto;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{display:flex;align-items:center;padding:0 14px;text-decoration:none;color:var(--muted);font-family:var(--display);font-style:italic;font-size:.82rem;white-space:nowrap;border-right:1px solid rgba(255,255,255,.035)}.nav a:hover,.nav a:focus{color:var(--ivory);background:rgba(184,146,93,.055)}
+    .page{position:relative;z-index:1;max-width:1220px;margin:0 auto;padding:0 38px 110px}
+    .hero{min-height:680px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(360px,.85fr);gap:68px;align-items:center;padding:86px 0 70px;border-bottom:1px solid var(--line)}
+    .kicker{display:flex;align-items:center;gap:14px;color:var(--stone-light);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}.kicker::before{content:"";width:46px;height:1px;background:var(--stone)}
+    .card-no{font-family:var(--display);font-size:clamp(3.5rem,8vw,6.5rem);line-height:.8;color:rgba(215,189,135,.18);font-weight:600;margin:34px 0 18px;letter-spacing:-.035em}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-family:var(--hebrew);direction:rtl;text-align:left;font-size:clamp(2.6rem,5.7vw,5.3rem);line-height:1.03;color:var(--ivory);font-weight:700;margin-bottom:14px}
+    .hero-de{font-family:var(--display);font-style:italic;color:var(--stone-light);font-size:clamp(1.35rem,2.3vw,2rem);line-height:1.15;margin-bottom:24px}
+    .lead{max-width:680px;color:var(--sand);font-size:1.06rem}.lead strong{color:var(--ivory);font-weight:600}
+    .badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line-strong);border-radius:999px;padding:5px 11px;color:var(--stone-light);background:rgba(184,146,93,.055);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}.badge.d{color:var(--water-light);border-color:rgba(110,158,170,.42);background:rgba(110,158,170,.07)}.badge.b{color:#ddc77f}.badge.open{color:#d49a92;border-color:rgba(201,107,98,.4);background:rgba(201,107,98,.06)}
+    .route-totem{position:relative;min-height:520px;background:linear-gradient(160deg,rgba(19,26,25,.94),rgba(8,11,11,.98));border:1px solid var(--line-strong);border-radius:180px 180px 18px 18px;padding:44px 36px 34px;box-shadow:var(--shadow);overflow:hidden}
+    .route-totem::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 12%,rgba(255,255,255,.025) 49%,transparent 72%)}
+    .totem-cap{text-align:center;font-family:var(--hebrew);color:var(--stone-light);font-size:.88rem;direction:rtl;letter-spacing:.04em}
+    .route-line{position:relative;height:382px;margin:18px auto 0;width:220px}
+    .route-line::before{content:"";position:absolute;left:50%;top:45px;bottom:48px;width:2px;background:linear-gradient(var(--stone-light),var(--stone),var(--water));box-shadow:0 0 22px rgba(184,146,93,.28)}
+    .route-node{position:absolute;left:50%;transform:translateX(-50%);width:100%;text-align:center}.route-node::before{content:"";display:block;width:13px;height:13px;margin:0 auto 8px;border-radius:50%;background:var(--ink);border:2px solid var(--stone-light);box-shadow:0 0 0 7px rgba(184,146,93,.09)}
+    .route-node b{display:block;color:var(--ivory);font-family:var(--hebrew);font-size:1rem;direction:rtl}.route-node span{display:block;color:var(--muted);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase}.route-node.temple{top:5px}.route-node.city{top:145px}.route-node.pool{bottom:0}.route-node.pool::before{border-color:var(--water-light);box-shadow:0 0 0 7px rgba(110,158,170,.10)}
+    .distance{position:absolute;left:calc(50% + 18px);top:112px;color:var(--stone-light);font-family:var(--display);font-style:italic;font-size:.83rem;writing-mode:vertical-rl;letter-spacing:.08em}
+    .north{position:absolute;right:26px;top:42%;font-size:.66rem;letter-spacing:.15em;color:var(--muted)}.north::before{content:"↑";display:block;color:var(--stone-light);font-size:1.5rem;text-align:center}
+    .totem-note{font-size:.72rem;color:var(--faint);text-align:center;margin:0;text-transform:uppercase;letter-spacing:.08em}
+    .source-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-top:0;background:var(--night)}
+    .layer{padding:22px 19px;border-right:1px solid var(--line);min-height:112px}.layer:last-child{border:0}.layer-code{font-family:var(--display);font-size:1.55rem;line-height:1;color:var(--stone-light)}.layer b{display:block;color:var(--ivory);font-family:var(--hebrew);font-size:.88rem;margin:8px 0 2px}.layer span{display:block;color:var(--muted);font-size:.76rem}.layer.inactive{opacity:.45}.layer.active{background:linear-gradient(180deg,rgba(110,158,170,.075),transparent)}.layer.active .layer-code{color:var(--water-light)}
+    .section{padding:78px 0 0;scroll-margin-top:80px}.section-head{display:grid;grid-template-columns:74px 1fr auto;gap:20px;align-items:end;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:28px}.roman{font-family:var(--display);font-size:2.5rem;line-height:.8;color:var(--stone)}.section-title h2{font-family:var(--hebrew);direction:rtl;text-align:left;color:var(--ivory);font-size:1.7rem;line-height:1.1;margin:0}.section-title p{font-family:var(--display);font-style:italic;color:var(--muted);margin:3px 0 0;font-size:1.05rem}.section-tag{font-size:.67rem;letter-spacing:.11em;text-transform:uppercase;color:var(--stone-light);border:1px solid var(--line);padding:6px 9px;border-radius:3px}
+    .intro-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:22px}.paper{background:linear-gradient(150deg,rgba(19,26,25,.94),rgba(13,17,17,.96));border:1px solid var(--line);border-radius:10px;padding:30px;box-shadow:0 14px 45px rgba(0,0,0,.14)}.paper h3{font-family:var(--hebrew);direction:rtl;color:var(--stone-light);font-size:1.08rem;margin-bottom:11px}.paper p:last-child{margin-bottom:0}.definition{font-size:1.1rem;color:var(--sand)}.callout{border-left:3px solid var(--water);background:linear-gradient(110deg,rgba(110,158,170,.09),rgba(16,21,21,.85))}.callout strong{color:var(--water-light)}
+    .verification{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.verify{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px 18px;min-height:155px}.verify::before{content:attr(data-n);position:absolute;right:13px;top:8px;font-family:var(--display);font-size:2.2rem;color:rgba(215,189,135,.10)}.verify h3{font-family:var(--hebrew);direction:rtl;text-align:left;color:var(--stone-light);font-size:.94rem;margin-bottom:7px}.verify p{font-size:.84rem;color:var(--muted);line-height:1.5;margin:0}.verify b{color:var(--ivory);font-weight:500}
+    .metric-band{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:22px}.metric{background:var(--panel);padding:22px 20px}.metric-value{font-family:var(--display);font-size:2.35rem;line-height:1;color:var(--ivory)}.metric-value small{font-size:.9rem;color:var(--stone-light)}.metric-label{display:block;margin-top:8px;color:var(--muted);font-size:.74rem;text-transform:uppercase;letter-spacing:.08em}.metric .source-mini{display:block;color:var(--water-light);font-size:.68rem;margin-top:4px}
+    .table-shell{overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:0 14px 45px rgba(0,0,0,.12)}table{width:100%;border-collapse:collapse;min-width:860px}th,td{padding:14px 15px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(215,189,135,.12)}th{font-family:var(--hebrew);font-size:.76rem;color:var(--stone-light);background:rgba(184,146,93,.07);font-weight:500;white-space:nowrap}td{font-size:.84rem;color:var(--sand)}td strong{color:var(--ivory);font-weight:600}.source-pill{display:inline-block;border-radius:3px;padding:2px 6px;font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;background:rgba(110,158,170,.12);color:var(--water-light);border:1px solid rgba(110,158,170,.23)}.source-pill.b{background:rgba(207,179,109,.10);border-color:rgba(207,179,109,.25);color:#ddc77f}.source-pill.e{background:rgba(201,107,98,.08);border-color:rgba(201,107,98,.24);color:#d49a92}
+    .orientation{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:24px}.diagram-card{position:relative;background:linear-gradient(160deg,#101716,#090c0c);border:1px solid var(--line-strong);border-radius:12px;padding:18px;min-height:590px;box-shadow:var(--shadow);overflow:hidden}.diagram-label{position:absolute;z-index:3;left:24px;top:20px;border:1px solid var(--line-strong);color:var(--stone-light);background:rgba(7,9,9,.82);padding:5px 8px;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase}.diagram-card svg{display:block;width:100%;height:auto;min-height:550px}.notes-stack{display:flex;flex-direction:column;gap:14px}.micro{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:19px}.micro h3{font-family:var(--hebrew);direction:rtl;text-align:left;color:var(--stone-light);font-size:.96rem;margin-bottom:8px}.micro p{font-size:.84rem;color:var(--muted);margin:0}.micro b{color:var(--ivory);font-weight:500}.micro.water{border-color:rgba(110,158,170,.34)}
+    .compare-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.compare{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:23px}.compare-code{font-family:var(--display);font-size:2.1rem;color:var(--stone);line-height:1}.compare h3{color:var(--ivory);font-family:var(--hebrew);font-size:1rem;margin:10px 0 7px;direction:rtl;text-align:left}.compare p{font-size:.82rem;color:var(--muted);margin:0}.compare.d{border-top:2px solid var(--water)}.compare.d .compare-code{color:var(--water-light)}.compare.b{border-top:2px solid var(--rambam)}.compare.a,.compare.c{opacity:.6}
+    .unknown{background:linear-gradient(125deg,rgba(201,107,98,.075),rgba(16,21,21,.97));border:1px solid rgba(201,107,98,.35);border-radius:12px;overflow:hidden}.unknown-head{display:flex;align-items:center;gap:16px;padding:24px 28px;border-bottom:1px solid rgba(201,107,98,.22)}.unknown-symbol{font-family:var(--display);font-size:2.5rem;line-height:1;color:var(--danger)}.unknown h3{font-family:var(--hebrew);direction:rtl;color:var(--ivory);font-size:1.25rem;margin:0}.unknown-grid{display:grid;grid-template-columns:repeat(2,1fr)}.unknown-item{padding:22px 28px;border-right:1px solid rgba(201,107,98,.15);border-bottom:1px solid rgba(201,107,98,.15)}.unknown-item:nth-child(2n){border-right:0}.unknown-item:nth-last-child(-n+2){border-bottom:0}.unknown-item b{display:block;color:#d7a09a;margin-bottom:5px;font-size:.88rem}.unknown-item p{font-size:.84rem;color:var(--muted);margin:0}
+    .conclusion{display:grid;grid-template-columns:1fr 1fr;gap:20px}.verdict{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:27px}.verdict h3{font-family:var(--hebrew);direction:rtl;text-align:left;color:var(--stone-light);font-size:1.05rem}.verdict ul{margin:0;padding-left:18px}.verdict li{margin:7px 0;color:var(--muted);font-size:.88rem}.verdict strong{color:var(--ivory);font-weight:500}.verdict.safe{border-top:2px solid var(--success)}.verdict.limit{border-top:2px solid var(--danger)}
+    .source-list{counter-reset:sources;display:grid;grid-template-columns:1fr 1fr;gap:10px}.citation{counter-increment:sources;display:grid;grid-template-columns:34px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:15px 17px;text-decoration:none}.citation::before{content:counter(sources,decimal-leading-zero);font-family:var(--display);color:var(--stone)}.citation b{display:block;color:var(--ivory);font-size:.87rem}.citation span{display:block;color:var(--muted);font-size:.76rem;margin-top:2px}.citation:hover{border-color:var(--line-strong);background:var(--panel-2)}
+    .style-reference{margin-top:84px;border-top:1px solid var(--line);padding-top:52px}.style-reference .section-head{margin-bottom:22px}.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}.tokens{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.swatch{border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--panel)}.swatch-color{height:52px}.swatch-label{padding:8px;font-size:.65rem;color:var(--muted)}.type-sample{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:22px}.type-sample .he{font-family:var(--hebrew);direction:rtl;text-align:left;color:var(--ivory);font-size:1.8rem}.type-sample .deco{font-family:var(--display);font-style:italic;color:var(--stone-light);font-size:1.35rem}.type-sample .body{font-family:var(--serif);color:var(--muted);font-size:.9rem}.rules{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.rule{border:1px solid var(--line);padding:15px;background:rgba(16,21,21,.72);font-size:.78rem;color:var(--muted)}.rule b{display:block;color:var(--ivory);margin-bottom:3px}
+    .footer{margin-top:90px;padding:34px 0 10px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:30px;color:var(--faint);font-size:.74rem}.footer-he{font-family:var(--hebrew);direction:rtl;color:var(--stone-light)}
+    @media(max-width:980px){.hero{grid-template-columns:1fr;gap:35px}.route-totem{min-height:470px;border-radius:130px 130px 18px 18px}.route-line{height:330px}.source-strip,.verification,.compare-grid{grid-template-columns:repeat(2,1fr)}.orientation{grid-template-columns:1fr}.style-grid{grid-template-columns:1fr}.rules{grid-template-columns:repeat(2,1fr)}.intro-grid{grid-template-columns:1fr}}
+    @media(max-width:680px){body{font-size:16px}.topbar{height:52px}.brand{padding:0 13px}.brand-text{display:none}.page{padding:0 16px 72px}.hero{padding:62px 0 44px;min-height:0}.card-no{margin-top:25px}.route-totem{padding-left:15px;padding-right:15px}.source-strip,.verification,.metric-band,.compare-grid,.unknown-grid,.conclusion,.source-list,.tokens,.rules{grid-template-columns:1fr}.layer,.unknown-item{border-right:0}.unknown-item:nth-last-child(2){border-bottom:1px solid rgba(201,107,98,.15)}.section{padding-top:58px}.section-head{grid-template-columns:50px 1fr}.section-tag{grid-column:2;justify-self:start}.paper{padding:22px}.diagram-card{padding:8px;min-height:460px}.diagram-card svg{min-height:440px}.style-grid{grid-template-columns:1fr}.footer{display:block}.footer-he{margin-top:10px}.metric{padding:18px}.metric-value{font-size:2rem}}
+    @media print{.topbar,.style-reference{display:none}body{background:#fff;color:#292929;font-size:11pt}body::before{display:none}.page{max-width:none;padding:0}.hero{min-height:0;page-break-after:always}.route-totem,.paper,.verify,.metric,.table-shell,.diagram-card,.micro,.compare,.unknown,.verdict,.citation{background:#fff!important;color:#222!important;box-shadow:none;border-color:#b9aa91}.section{page-break-before:auto}.section,.paper,.unknown,.diagram-card{break-inside:avoid}.section-title h2,h1,.paper h3,.verify h3,.micro h3,.compare h3,.unknown h3,.verdict h3,.citation b{color:#111}.lead,.paper p,.verify p,.micro p,.compare p,.unknown-item p,.verdict li,.citation span,td{color:#333}.route-totem{border-radius:100px 100px 10px 10px}.source-strip{border-top:1px solid #b9aa91}.footer{color:#555}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">Zum Inhalt springen</a>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Zum Seitenanfang"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">בֵּית הַמִּקְדָּשׁ הַשְּׁלִישִׁי</span></a>
+    <nav class="nav" aria-label="Seitennavigation">
+      <a href="#definition">I · Definition</a><a href="#pruefung">II · Prüfung</a><a href="#masse">III · Maße</a><a href="#lage">IV · Lage</a><a href="#vergleich">V · Vergleich</a><a href="#offen">VI · Offen</a><a href="#fazit">VII · Fazit</a><a href="#quellen">Quellen</a><a href="#stil">Stilreferenz</a>
+    </nav>
+  </header>
+
+  <main id="content" class="page">
+    <section id="top" class="hero" aria-labelledby="page-title">
+      <div>
+        <div class="kicker">Mikdash-Architektur · Karte 31 von 42</div>
+        <div class="card-no">31 / 42</div>
+        <h1 id="page-title">דֶּרֶךְ הָעוֹלִים מִן הַשִּׁלֹחַ</h1>
+        <div class="hero-de">Die Aufstiegsstraße vom Schiloach zum Tempelberg</div>
+        <p class="lead">Diese Baukarte dokumentiert eine <strong>historische Zugangsachse Jerusalems aus der Zeit des Zweiten Tempels</strong>. Sie dient dem Projekt des Dritten Tempels als topographische Referenz – nicht als vorgeschriebener Zukunftsgrundriss und nicht als Beleg für ein bestimmtes künftiges Tor.</p>
+        <div class="badges">
+          <span class="badge d">D · Archäologie</span>
+          <span class="badge b">B · Rambam-Vergleich</span>
+          <span class="badge open">nicht normativ</span>
+          <span class="badge">Tor VI · Weg und Stadt</span>
+        </div>
+      </div>
+      <aside class="route-totem" aria-label="Schematisches vertikales Wegprofil">
+        <div class="totem-cap">מִדָּרוֹם אֶל הַר הַבַּיִת</div>
+        <div class="route-line">
+          <div class="route-node temple"><b>הַר הַבַּיִת</b><span>Fuß des Tempelbergs</span></div>
+          <div class="route-node city"><b>הָעִיר הַתַּחְתּוֹנָה</b><span>gestufte Stadtstraße</span></div>
+          <div class="route-node pool"><b>בְּרֵכַת הַשִּׁלֹחַ</b><span>Schiloach-Becken</span></div>
+          <div class="distance">ca. 600 m · historische Route</div>
+        </div>
+        <div class="north">N</div>
+        <p class="totem-note">Schematisch · Süd → Nord · nicht maßstäblich</p>
+      </aside>
+    </section>
+
+    <section class="source-strip" aria-label="Vier Quellenebenen">
+      <div class="layer inactive"><div class="layer-code">A</div><b>יְחֶזְקֵאל</b><span>Zukunftstext · für diese Straße kein Maß genannt</span></div>
+      <div class="layer"><div class="layer-code">B</div><b>מִדּוֹת / רַמְבַּ״ם</b><span>Tempelberg-Tore als Vergleichsreferenz</span></div>
+      <div class="layer inactive"><div class="layer-code">C</div><b>רַמְחַ״ל</b><span>Zukunftsrekonstruktion · keine Identität dieser Straße</span></div>
+      <div class="layer active"><div class="layer-code">D</div><b>אַרְכֵאוֹלוֹגְיָה</b><span>Hauptschicht · Zweiter Tempel · historische Topographie</span></div>
+    </section>
+
+    <section id="definition" class="section">
+      <div class="section-head"><div class="roman">I</div><div class="section-title"><h2>תַּקְצִיר</h2><p>Kurzdefinition</p></div><div class="section-tag">Gegenstand</div></div>
+      <div class="intro-grid">
+        <article class="paper">
+          <h3>מַהוּ הַדֶּרֶךְ</h3>
+          <p class="definition">Die sogenannte Pilger- oder Aufstiegsstraße ist ein monumentaler, abschnittsweise gestufter und mit großen Steinplatten gepflasterter Straßenkörper. Er verband in der späten Zweiten-Tempel-Zeit den Bereich des Schiloach-Beckens im Süden der Davidstadt mit dem Fuß des Tempelbergs im Norden.</p>
+          <p>Für dieses Architekturprojekt ist sie ein <strong>historischer Lage- und Logistikanker</strong>. Ihre erhaltenen beziehungsweise rekonstruierten Maße beschreiben das antike Jerusalem; sie werden nicht als baurechtliche Maße des Dritten Tempels ausgegeben.</p>
+        </article>
+        <aside class="paper callout">
+          <h3>גְּבוּל הַטַּעֲנָה</h3>
+          <p><strong>Gesichert:</strong> Süd–Nord-Verbindung, ungefährer Gesamtlauf, Regelbreite und monumentale Pflasterung.</p>
+          <p><strong>Nicht gesichert:</strong> dass dieselbe Trasse, Breite oder ein bestimmtes historisches Tor im Zukunftsbau unverändert übernommen wird.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="pruefung" class="section">
+      <div class="section-head"><div class="roman">II</div><div class="section-title"><h2>בְּדִיקַת מְקוֹרוֹת</h2><p>Quellenprüfung vor der Darstellung</p></div><div class="section-tag">Pflichtmodul</div></div>
+      <div class="verification">
+        <article class="verify" data-n="01"><h3>מִדָּה · Maß</h3><p><b>ca. 600 m</b> Gesamtroute; <b>ca. 8 m</b> Regelbreite; am Südende nach öffentlicher Grabungsdarstellung bis <b>ca. 30 m</b>.</p></article>
+        <article class="verify" data-n="02"><h3>יְחִידָה · Einheit</h3><p>Moderne <b>Metermaße des Grabungsbefunds</b>. Keine Umrechnung aus Amot und deshalb keine angenommene Ammah-Länge.</p></article>
+        <article class="verify" data-n="03"><h3>צִיר · Achse</h3><p>Längsachse: <b>Süd → Nord</b>. Breite: <b>quer zur Straßenachse</b>. Höhenprofil: ansteigend, hier nicht numerisch rekonstruiert.</p></article>
+        <article class="verify" data-n="04"><h3>שִׁכְבָה · Schicht</h3><p><b>D · Archäologie</b> ist Hauptquelle. B · Rambam erscheint nur beim Vergleich der südlichen Tempelberg-Tore.</p></article>
+        <article class="verify" data-n="05"><h3>הַשְׁוָאָה · Vergleich</h3><p>Rambam nennt <b>zwei südliche Tore</b> des Referenz-Tempelbergs. Die Straße wird keinem davon sicher zugeordnet.</p></article>
+        <article class="verify" data-n="06"><h3>אִי־וַדָּאוּת · Offen</h3><p>Vollständiger antiker Verlauf, alle Phasen, exaktes Höhenprofil und künftige Weiterverwendung sind <b>nicht abschließend bestimmt</b>.</p></article>
+        <article class="verify" data-n="07"><h3>הַמַּיִם · Wasser</h3><p>Schiloach-System, Straßenentwässerung und Jechezkel-47-Strom bleiben <b>drei getrennte Systeme</b>.</p></article>
+        <article class="verify" data-n="08"><h3>תְּחוּם · Abgrenzung</h3><p>Die Seite behandelt <b>nur Architektur und Topographie</b>. Keine Opferhandlung und keine Ritualtechnik.</p></article>
+      </div>
+    </section>
+
+    <section id="masse" class="section">
+      <div class="section-head"><div class="roman">III</div><div class="section-title"><h2>מִדּוֹת</h2><p>Maße und Befundstatus</p></div><div class="section-tag">Originaleinheit zuerst</div></div>
+      <div class="metric-band" aria-label="Hauptmaße">
+        <div class="metric"><div class="metric-value">≈ 600 <small>m</small></div><span class="metric-label">Gesamtroute · S–N</span><span class="source-mini">D · publizierte Grabungsdarstellung</span></div>
+        <div class="metric"><div class="metric-value">≈ 8 <small>m</small></div><span class="metric-label">Regelbreite · quer</span><span class="source-mini">D · abschnittsbezogen</span></div>
+        <div class="metric"><div class="metric-value">bis ≈ 30 <small>m</small></div><span class="metric-label">Südliche Aufweitung</span><span class="source-mini">D · nicht Regelbreite</span></div>
+        <div class="metric"><div class="metric-value">D</div><span class="metric-label">Sicherheitsstufe</span><span class="source-mini">archäologisch · nicht normativ</span></div>
+      </div>
+      <div class="table-shell">
+        <table>
+          <thead><tr><th>Bauteil</th><th>Quelle</th><th>Originalmaß</th><th>Einheit</th><th>Achse</th><th>Sicherheit</th><th>Bemerkung</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Aufstiegsstraße</strong></td><td>City of David / IAA-Darstellung</td><td>ca. 600</td><td>m</td><td>Längslauf S–N</td><td><span class="source-pill">D · arch.</span></td><td>Verbindung Schiloach-Becken → Fuß des Tempelbergs.</td></tr>
+            <tr><td><strong>Regelquerschnitt</strong></td><td>City of David / IAA-Darstellung</td><td>ca. 8</td><td>m</td><td>quer zur Straße</td><td><span class="source-pill">D · arch.</span></td><td>Durchschnitt/Regelwert; nicht auf jeden Abschnitt übertragen.</td></tr>
+            <tr><td><strong>Südliche Aufweitung</strong></td><td>City of David</td><td>bis ca. 30</td><td>m</td><td>quer zur Straße</td><td><span class="source-pill">D · arch.</span></td><td>Lokale Aufweitung nahe dem südlichen Beginn; kein Normquerschnitt.</td></tr>
+            <tr><td><strong>Pflasterkörper</strong></td><td>Ausgrabungsberichte / öffentliche IAA-Darstellung</td><td>nicht einheitlich angegeben</td><td>—</td><td>Fläche / Bauteil</td><td><span class="source-pill e">E · offen</span></td><td>Große Steinplatten belegt; Plattenmaß nicht pauschalisiert.</td></tr>
+            <tr><td><strong>Höhenanstieg</strong></td><td>Topographischer Befund</td><td>nicht angegeben</td><td>—</td><td>vertikal S–N</td><td><span class="source-pill e">E · offen</span></td><td>Keine erfundene Gesamtsteigung oder Stufenzahl.</td></tr>
+            <tr><td><strong>Tempelberg-Toröffnung</strong></td><td>Rambam, Beit HaBechirah 5:2</td><td>10 breit × 20 hoch</td><td>Amot</td><td>lichte Öffnung / Höhe</td><td><span class="source-pill b">B · Referenz</span></td><td>Referenzmaß der fünf Bergtore; nicht als Straßenbreite verwenden.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="lage" class="section">
+      <div class="section-head"><div class="roman">IV</div><div class="section-title"><h2>מָקוֹם וְכִוּוּן</h2><p>Lage, Orientierung und Infrastruktur</p></div><div class="section-tag">Schema · nicht maßstäblich</div></div>
+      <div class="orientation">
+        <figure class="diagram-card" aria-labelledby="diagram-caption">
+          <div class="diagram-label">Schematischer Lageplan</div>
+          <svg viewBox="0 0 720 590" role="img" aria-labelledby="svg-title svg-desc">
+            <title id="svg-title">Schematischer Süd-Nord-Verlauf der Aufstiegsstraße</title>
+            <desc id="svg-desc">Das Schiloach-Becken liegt südlich. Von dort führt die gestufte Straße durch die Unterstadt nach Norden zum Fuß des Tempelbergs. Unter Teilen verläuft ein getrennter Entwässerungskanal.</desc>
+            <defs>
+              <linearGradient id="road" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#8f653d"/><stop offset="1" stop-color="#d7bd87"/></linearGradient>
+              <linearGradient id="pool" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9ec2c7"/><stop offset="1" stop-color="#486f79"/></linearGradient>
+              <pattern id="pavers" width="42" height="27" patternUnits="userSpaceOnUse"><path d="M0 0H42V27H0Z M21 0V27 M0 13.5H42" fill="none" stroke="rgba(8,9,9,.32)" stroke-width="1"/></pattern>
+              <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <path d="M55 64 C155 94 170 55 265 82 S450 103 666 62" fill="none" stroke="#4e514b" stroke-width="2" stroke-dasharray="4 7"/>
+            <path d="M72 507 C190 461 191 407 277 366 C361 326 323 247 428 201 C512 164 517 112 624 72" fill="none" stroke="#342d23" stroke-width="102" stroke-linecap="round" opacity=".5"/>
+            <path d="M72 507 C190 461 191 407 277 366 C361 326 323 247 428 201 C512 164 517 112 624 72" fill="none" stroke="url(#road)" stroke-width="72" stroke-linecap="round"/>
+            <path d="M72 507 C190 461 191 407 277 366 C361 326 323 247 428 201 C512 164 517 112 624 72" fill="none" stroke="url(#pavers)" stroke-width="68" stroke-linecap="round" opacity=".72"/>
+            <path d="M100 522 C202 470 213 428 294 387 C382 343 355 270 452 223 C535 183 536 132 647 93" fill="none" stroke="#6e9eaa" stroke-width="5" stroke-dasharray="8 9" opacity=".78"/>
+            <g transform="translate(30 458)"><path d="M0 19 C32 -4 92 -5 125 15 L111 67 H13Z" fill="url(#pool)" opacity=".96"/><path d="M8 25H116M12 37H114M15 49H111" stroke="#d7edf0" stroke-width="2" opacity=".45"/><rect x="-4" y="74" width="180" height="43" rx="4" fill="#090c0c" opacity=".88"/><text x="62" y="92" fill="#f2ead9" font-family="Frank Ruhl Libre" font-size="17" text-anchor="middle" direction="rtl">בְּרֵכַת הַשִּׁלֹחַ</text><text x="62" y="109" fill="#9ec2c7" font-family="EB Garamond" font-size="11" text-anchor="middle">SILOAM POOL · SOUTH</text></g>
+            <g transform="translate(488 22)"><rect x="-4" y="-7" width="198" height="28" rx="4" fill="#090c0c" opacity=".9"/><path d="M0 55H190V116H0Z" fill="#1a1712" stroke="#d7bd87" stroke-width="2"/><path d="M18 55V27H172V55M44 55V39H146V55" fill="none" stroke="#b8925d" stroke-width="3"/><path d="M62 116V81H91V116M99 116V81H128V116" fill="#090c0c" stroke="#d7bd87" stroke-width="2"/><text x="95" y="12" fill="#f2ead9" font-family="Frank Ruhl Libre" font-size="16" text-anchor="middle" direction="rtl">לְמַרְגְּלוֹת הַר הַבַּיִת</text><rect x="0" y="121" width="190" height="24" rx="3" fill="#090c0c" opacity=".88"/><text x="95" y="137" fill="#d7bd87" font-family="EB Garamond" font-size="11" text-anchor="middle">TEMPLE MOUNT INTERFACE · NORTH</text></g>
+            <g transform="translate(310 285)"><rect x="24" y="-31" width="242" height="57" rx="5" fill="#090c0c" opacity=".86"/><circle cx="0" cy="0" r="18" fill="#0b0e0e" stroke="#d7bd87" stroke-width="2" filter="url(#glow)"/><text x="0" y="5" fill="#f2ead9" font-family="Cormorant Garamond" font-size="16" text-anchor="middle">D</text><text x="36" y="-11" fill="#f2ead9" font-family="Frank Ruhl Libre" font-size="16">דֶּרֶךְ מְדוֹרֶגֶת</text><text x="36" y="14" fill="#a89f8e" font-family="EB Garamond" font-size="11">MONUMENTAL STEPPED STREET</text></g>
+            <g transform="translate(397 421)"><line x1="0" y1="0" x2="-65" y2="-40" stroke="#6e9eaa" stroke-width="1"/><circle cx="-65" cy="-40" r="3" fill="#9ec2c7"/><rect x="7" y="-31" width="278" height="55" rx="5" fill="#090c0c" opacity=".86"/><text x="17" y="-11" fill="#9ec2c7" font-family="Frank Ruhl Libre" font-size="14">תְּעָלַת נִקּוּז נִפְרֶדֶת</text><text x="17" y="13" fill="#8b9290" font-family="EB Garamond" font-size="10">SEPARATE DRAINAGE CHANNEL BELOW PARTS</text></g>
+            <g transform="translate(67 52)"><path d="M0 38V0M0 0L-7 12M0 0L7 12" stroke="#d7bd87" stroke-width="2" fill="none"/><text x="0" y="54" fill="#d7bd87" font-family="Cormorant Garamond" font-size="13" text-anchor="middle">NORTH</text></g>
+            <g transform="translate(164 93)"><line x1="0" y1="0" x2="0" y2="355" stroke="#d7bd87" stroke-width="1" stroke-dasharray="3 7"/><path d="M-5 8L0 0L5 8M-5 347L0 355L5 347" fill="none" stroke="#d7bd87"/><text transform="translate(-13 186) rotate(-90)" fill="#d7bd87" font-family="Cormorant Garamond" font-style="italic" font-size="15" text-anchor="middle">approximately 600 m · historical route</text></g>
+            <text id="diagram-caption" x="485" y="570" fill="#6f746d" font-family="EB Garamond" font-size="10" text-anchor="middle">RELATIVE ORIENTATION · NO GPS CLAIM · NOT A FUTURE BUILDING PLAN</text>
+          </svg>
+        </figure>
+        <div class="notes-stack">
+          <article class="micro"><h3>צִיר דָּרוֹם–צָפוֹן</h3><p><b>Beginn:</b> Bereich des Schiloach-Beckens im Süden der Davidstadt. <b>Verlauf:</b> nordwärts durch die Unterstadt. <b>Ziel:</b> Fuß des Tempelbergs.</p></article>
+          <article class="micro"><h3>הַמִּפְגָּשׁ עִם הָהָר</h3><p>Rambams Referenzberg besitzt <b>zwei südliche Tore</b>. Aus dieser Zahl folgt nicht, dass die ausgegrabene Straße sicher an eines dieser Tore oder an ein künftiges Tor gebunden ist.</p></article>
+          <article class="micro water"><h3>שְׁלֹשָׁה מַעֲרָכוֹת מַיִם</h3><p><b>1.</b> Gihon–Schiloach-Wasserversorgung.<br><b>2.</b> Städtische Straßenentwässerung.<br><b>3.</b> Jechezkel 47: Zukunftsstrom aus dem Tempelhaus.<br>Keine Gleichsetzung.</p></article>
+          <article class="micro"><h3>מַעֲמַד הַתַּרְשִׁים</h3><p>Die Zeichnung ist <b>schematisch</b>. Sie stellt relative Lagebeziehungen dar, nicht Breite, Steigung, genaue Krümmung oder moderne Koordinaten.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="vergleich" class="section">
+      <div class="section-head"><div class="roman">V</div><div class="section-title"><h2>הַשְׁוָאַת הַתַּבְנִיּוֹת</h2><p>Quellenvergleich ohne Harmonisierung</p></div><div class="section-tag">A · B · C · D</div></div>
+      <div class="compare-grid">
+        <article class="compare a"><div class="compare-code">A</div><h3>יְחֶזְקֵאל</h3><p>Jechezkel 40–48 beschreibt den Zukunftsbau und Jechezkel 47 einen Strom aus dem Haus. Der Text gibt <strong>kein Maß für diese historische Straße</strong> und identifiziert den Strom nicht mit Schiloach.</p></article>
+        <article class="compare b"><div class="compare-code">B</div><h3>מִדּוֹת / רַמְבַּ״ם</h3><p>Rambam 5:2 nennt fünf Tempelberg-Tore, davon zwei im Süden, mit Öffnungen 10 × 20 Amot. Das ist eine <strong>Referenz für den Berg</strong>, keine Zuordnung der Straße.</p></article>
+        <article class="compare c"><div class="compare-code">C</div><h3>רַמְחַ״ל</h3><p>Mishkeni Elyon liefert ein Zukunftsmodell des Mikdasch. Die hier dokumentierte Zweittempelzeit-Straße wird dadurch <strong>nicht automatisch Teil seines Maßplans</strong>.</p></article>
+        <article class="compare d"><div class="compare-code">D</div><h3>אַרְכֵאוֹלוֹגְיָה</h3><p>Die Hauptquelle für Verlauf, Metermaße, Pflasterung und Drainage. Sie rekonstruiert <strong>historische Stadtarchitektur</strong>, nicht die verbindliche Gestalt des Dritten Tempels.</p></article>
+      </div>
+    </section>
+
+    <section id="offen" class="section">
+      <div class="section-head"><div class="roman">VI</div><div class="section-title"><h2>מַה אֵין אָנוּ יוֹדְעִים</h2><p>Offene Punkte als Datenbestand</p></div><div class="section-tag">nicht ergänzen</div></div>
+      <div class="unknown">
+        <div class="unknown-head"><div class="unknown-symbol">?</div><h3>אִי־וַדָּאוּת אֵינָהּ רְשׁוּת לְהַמְצִיא</h3></div>
+        <div class="unknown-grid">
+          <div class="unknown-item"><b>Künftige Trassierung</b><p>Keine Primärquelle verpflichtet den Dritten Tempel zur identischen Wiederverwendung der etwa 600 m langen historischen Straße.</p></div>
+          <div class="unknown-item"><b>Künftiges Zieltor</b><p>Weder eines der historischen Südtore noch ein bestimmtes Jechezkel-Tor wird hier als sicherer Endpunkt behauptet.</p></div>
+          <div class="unknown-item"><b>Vollständiges Höhenprofil</b><p>Die Seite gibt keine Gesamtsteigung, keine Gesamtstufenzahl und keine barrierefreie Parallelführung vor.</p></div>
+          <div class="unknown-item"><b>Einheitlicher Querschnitt</b><p>Die ca. 8 m sind kein überall identisches Maß; die südliche Aufweitung darf nicht auf die gesamte Strecke übertragen werden.</p></div>
+          <div class="unknown-item"><b>Alle Bauphasen</b><p>Datierung, Umbauten und abschnittsweise Unterschiede bleiben Gegenstand archäologischer Forschung.</p></div>
+          <div class="unknown-item"><b>Hydraulische Verbindung</b><p>Die Drainage unter der Straße ist weder Hiskijas Tunnel noch der Zukunftsstrom aus Jechezkel 47.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fazit" class="section">
+      <div class="section-head"><div class="roman">VII</div><div class="section-title"><h2>מַסְקָנַת בִּנְיָן</h2><p>Bau-Fazit</p></div><div class="section-tag">Quellentreue</div></div>
+      <div class="conclusion">
+        <article class="verdict safe"><h3>מַה נִּתָּן לְשַׁמֵּר</h3><ul><li><strong>Städtebauliches Prinzip:</strong> eine klare südliche Aufstiegsachse vom unteren Stadtbereich zum Tempelberg.</li><li><strong>Architektonisches Prinzip:</strong> monumentaler, gepflasterter, abschnittsweise gestufter öffentlicher Raum.</li><li><strong>Infrastrukturprinzip:</strong> sichtbarer Straßenkörper und getrennte Entwässerung.</li><li><strong>Quellenprinzip:</strong> Archäologie bleibt als Schicht D sichtbar.</li></ul></article>
+        <article class="verdict limit"><h3>מַה אֵין לִקְבֹּעַ</h3><ul><li><strong>Keine Normbreite</strong> von 8 m für den Dritten Tempel.</li><li><strong>Kein fixes Zukunftstor</strong> am nördlichen Ende der Trasse.</li><li><strong>Keine Gleichsetzung</strong> von Schiloach, Drainage und Jechezkel-Strom.</li><li><strong>Keine GPS-Scheinpräzision</strong> und keine erfundene Höhenrechnung.</li></ul></article>
+      </div>
+    </section>
+
+    <section id="quellen" class="section">
+      <div class="section-head"><div class="roman">Q</div><div class="section-title"><h2>מְקוֹרוֹת</h2><p>Quellenapparat</p></div><div class="section-tag">Primär · Referenz · Befund</div></div>
+      <div class="source-list">
+        <a class="citation" href="https://cityofdavid.org.il/en/5-things-to-know-about-the-pilgrimage-road-eng/" target="_blank" rel="noopener"><span><b>City of David · Pilgrimage Road</b>600 m Länge, ca. 8 m Breite, südliche Aufweitung; öffentliche Grabungsdarstellung.</span></a>
+        <a class="citation" href="https://cityofdavid.org.il/en/innuguration-of-ancient-first-century-pilgramge-road-eng/" target="_blank" rel="noopener"><span><b>City of David / IAA · Inauguration report</b>Verbindung vom Schiloach-Becken zum Fuß des Tempelbergs; Steinplatten und Grabungsstand.</span></a>
+        <a class="citation" href="https://www.sefaria.org/Mishnah_Sukkah.4.9" target="_blank" rel="noopener"><span><b>Mischna Sukkah 4:9</b>Rabbinischer Ortsbezug Schiloach → Wassertor; hier ausschließlich topographisch verwendet.</span></a>
+        <a class="citation" href="https://www.chabad.org/library/article_cdo/aid/1007198/jewish/Beit-Habechirah-Chapter-5.htm" target="_blank" rel="noopener"><span><b>Rambam · Beit HaBechirah 5:2</b>Fünf Tore des Referenz-Tempelbergs; zwei im Süden; Öffnung 10 × 20 Amot.</span></a>
+        <a class="citation" href="https://mechon-mamre.org/i/t/k/k1247.htm" target="_blank" rel="noopener"><span><b>Jechezkel 47:1–5</b>Zukunftsstrom vom Tempelhaus nach Osten und vier Messungen von je 1000 Amot.</span></a>
+        <a class="citation" href="https://www.sefaria.org/Mishnah_Middot.2.1" target="_blank" rel="noopener"><span><b>Mischna Middot 2:1</b>500 × 500 Amot des Referenz-Tempelbergs; nicht mit archäologischen Straßenmaßen vermischen.</span></a>
+      </div>
+    </section>
+
+    <section id="stil" class="style-reference" aria-labelledby="style-title">
+      <div class="section-head"><div class="roman">S</div><div class="section-title"><h2 id="style-title">שְׂפַת הַמַּרְאֶה</h2><p>Verbindliche visuelle Stilreferenz für weitere Baukarten</p></div><div class="section-tag">Designsystem</div></div>
+      <div class="style-grid">
+        <div class="tokens" aria-label="Farbpalette">
+          <div class="swatch"><div class="swatch-color" style="background:#070909"></div><div class="swatch-label">Tinte · #070909</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#f2ead9"></div><div class="swatch-label">Elfenbein · #F2EAD9</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#b8925d"></div><div class="swatch-label">Stein · #B8925D</div></div>
+          <div class="swatch"><div class="swatch-color" style="background:#6e9eaa"></div><div class="swatch-label">Wasser · #6E9EAA</div></div>
+        </div>
+        <div class="type-sample"><div class="he">מִדָּה · מָקוֹם · מָקוֹר</div><div class="deco">Architecture as disciplined memory</div><div class="body">Frank Ruhl Libre für Hebräisch · Cormorant Garamond für Titel und Metadaten · EB Garamond für deutschen Fließtext.</div></div>
+        <div class="rules">
+          <div class="rule"><b>01 · Dunkel und materiell</b>Schwarzgrüner Grund, Stein/Bronze für Architektur, gedämpftes Blau nur für Wasser und Archäologie D.</div>
+          <div class="rule"><b>02 · Quelle vor Dekor</b>Jede Zahl trägt Einheit, Achse, Schicht und Sicherheit. Diagramme nennen ihren Maßstabsstatus.</div>
+          <div class="rule"><b>03 · Hebräisch führt</b>Hebräische Abschnittstitel stehen typographisch zuerst; Deutsch erklärt knapp und präzise.</div>
+          <div class="rule"><b>04 · Unsicherheit sichtbar</b>Offene Punkte erhalten eine eigene rote Datenbox; sie werden nicht in Fußnoten versteckt.</div>
+          <div class="rule"><b>05 · Kartenrhythmus</b>Großer Hero → Quellenband → sieben nummerierte Module → Quellenapparat → Bau-Fazit.</div>
+          <div class="rule"><b>06 · Diagramme</b>Vektorzeichnung statt dekorativer Rekonstruktion. Nordrichtung, Legende und Status zwingend.</div>
+          <div class="rule"><b>07 · Keine Verschmelzung</b>Jechezkel, Rambam/Middot, Ramchal und Archäologie bleiben farblich und sprachlich getrennt.</div>
+          <div class="rule"><b>08 · Druckfähig</b>Komponenten vermeiden Seitenbruch; Navigation und Designsystem werden im Druck ausgeblendet.</div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer"><div>MIKDASH ARCHITEKTUR · BAUKARTE 31 / 42 · VISUELLE STILREFERENZ</div><div class="footer-he">דִּיּוּק הוּא נֶאֱמָנוּת לַמָּקוֹר — לֹא הַשְׁלָמַת הֶחָסֵר</div></footer>
+  </main>
+</body>
+</html>
