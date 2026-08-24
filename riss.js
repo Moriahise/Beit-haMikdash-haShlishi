@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════════
-   RISS v1.4.0 — aus einer Mikdash-Baukarte wird eine Zeichnung.
+   RISS v1.5.0 — aus einer Mikdash-Baukarte wird eine Zeichnung.
 
    Gezeichnet wird ausschließlich, was die Maßtabelle der Karte belegt.
    Was dort offen bleibt, erscheint als offen und wird nicht ergänzt.
@@ -10,7 +10,7 @@
 var RISS = (function () {
   "use strict";
 
-  var VERSION = "1.4.0";              /* Karten 01–26 · vollständige Kartenprüfung */
+  var VERSION = "1.5.0";              /* Karten 01–32 · vollständige Kartenprüfung */
 
   var C = {
     ink: "#070909", night: "#0B0E0E", panel: "#101515",
@@ -144,6 +144,7 @@ var RISS = (function () {
     var q = function (sel) { var n = doc.querySelector(sel); return n ? strip(n.textContent) : ""; };
     var kick = q(".kicker");
     var m = kick.match(/(?:Baukarte|Karte)\s*(\d+)\s*von\s*(\d+)/i);
+    if (!m) m = q(".number").match(/^(\d+)\s*\/\s*(\d+)/);
     var card = {
       nr: m ? m[1] : "??",
       kicker: kick,
@@ -212,6 +213,10 @@ var RISS = (function () {
   function firstNumber(s, fallback) {
     var m = String(s == null ? "" : s).match(/\d+(?:[.,]\d+)?/);
     return m ? parseFloat(m[0].replace(",", ".")) : fallback;
+  }
+  function numbers(s) {
+    var m = String(s == null ? "" : s).match(/\d+(?:[.,]\d+)?/g) || [];
+    return m.map(function (v) { return parseFloat(v.replace(",", ".")); });
   }
   function rowNumber(card, re, fallback) {
     var r = firstRow(card, re);
@@ -303,6 +308,15 @@ var RISS = (function () {
     if (nr === "24" || (/Gewölbe unter dem Berg/i.test(text) && /Bodenöffnung/i.test(text))) return "hohlraeume";
     if (nr === "25" || (/Gihon-Quelle/i.test(text) && /Schiloach in den Tagen des Achaz/i.test(text))) return "wasserorte";
     if (nr === "26" || (/Becken und Leitung/i.test(text) && /Verschluss und Umleitung/i.test(text))) return "wasserwerk";
+    /* Karten 27–32 bilden Wasser-, Weg- und Grabungsbefunde. Die Maße
+       gehören zu getrennten Publikationsständen, Beobachtungspunkten oder
+       Abschnitten und dürfen nicht in das allgemeine Streckenmodell fallen. */
+    if (nr === "27" || (/Sperrmauer/i.test(text) && /Treppenläufe/i.test(text) && /Freigelegte Ostseite/i.test(text))) return "schiloachbecken";
+    if (nr === "28" || (/Wegbeziehung Schiloach/i.test(text) && /Wassertor der Azarah/i.test(text))) return "schiloachweg";
+    if (nr === "29" || (/Austrittsort/i.test(text) && /unter der Schwelle/i.test(text) && /Zweiter Beobachtungspunkt/i.test(text))) return "schwellenwasser";
+    if (nr === "30" || (/Erste Strecke/i.test(text) && /Vierte Strecke/i.test(text) && /nicht mehr durchquerbar|לֹא יֵעָבֵר/i.test(text))) return "viermessungen";
+    if (nr === "31" || (/Gesamtkorridor/i.test(text) && /Studienabschnitt Area S/i.test(text) && /Pflasterplatten/i.test(text))) return "aufstiegsstrasse";
+    if (nr === "32" || (/Hauptkanal · Area S5/i.test(text) && /Hauptkanal · Area S17/i.test(text) && /ABGRENZUNG III/i.test(text))) return "entwaesserung";
     if (/טְרַקְסִין|Trachsin|Zwischenzone/i.test(text)) return "trennzone";
     if (/הַתָּאִים|Seitenkammern/i.test(text) && /33|drei Geschosse|3 Geschosse/i.test(text)) return "kammern";
     if (g.rect && g.rect.L && g.rect.B) return "grundriss";
@@ -1632,6 +1646,304 @@ var RISS = (function () {
     });
   }
 
+  /* ══════════ 18 · Karte 27: Schiloach-Becken · Befundstände getrennt ══════════ */
+  function schiloachbecken(card) {
+    var W = 1240, H = 1120, b = [];
+    var pn = numbers((firstRow(card, /Maßsatz/i) || {}).mass),
+        iaaH = firstNumber((firstRow(card, /Sperrmauer, Höhe/i) || {}).mass, 12),
+        iaaB = firstNumber((firstRow(card, /Sperrmauer, Breite/i) || {}).mass, 8),
+        iaaL = firstNumber((firstRow(card, /freigelegte Länge/i) || {}).mass, 21),
+        ost = numbers((firstRow(card, /Freigelegte Ostseite/i) || {}).mass);
+    var pL = pn[0] || 19, pH = pn[1] || 11, pB = pn[2] || 10;
+
+    function panel(x, y, w, h, title, sub) {
+      b.push(R(x, y, w, h, { fill: C.panel, stroke: C.stone, sw: 1.5, rx: 8 }));
+      b.push(T(x + 18, y + 28, title, { fill: C.stoneLt, size: 12 }));
+      b.push(T(x + 18, y + 49, sub, { fill: C.faint, size: 10 }));
+    }
+    panel(70, 165, 520, 360, "PNAS 2025 · Fachpublikation", "ein zusammengehöriger Maßsatz · nicht mit IAA-Werten mitteln");
+    var ps = 18, px = 135, py = 265;
+    b.push(R(px, py, pL * ps, pB * ps, { fill: "url(#rHatchQ)", stroke: C.waterLt, sw: 2 }));
+    b.push(dimH(px, px + pL * ps, py - 24, "mind. " + pL + " m lang", C.waterLt, 11));
+    b.push(dimV(py, py + pB * ps, px - 24, pB + " m breit", C.waterLt, 11));
+    b.push(L(505, 285, 505, 285 + pH * 13, C.stoneLt, 5));
+    b.push(dimV(285, 285 + pH * 13, 535, pH + " m hoch", C.stoneLt, 11));
+    b.push(T(135, 485, "Grundfläche und Höhe gehören zu diesem Publikationssatz.", { fill: C.muted, size: 10 }));
+
+    panel(650, 165, 520, 360, "IAA-Mitteilung · Stand 2026", "öffentliche Grabungswerte · Mindest-/Fortsetzungsangaben bleiben offen");
+    var ix = 710, iy = 278, is = 17;
+    b.push(R(ix, iy, iaaL * is, iaaB * is, { fill: "url(#rHatch)", stroke: C.danger, sw: 2, dash: "7 5" }));
+    b.push(dimH(ix, ix + iaaL * is, iy - 24, iaaL + " m freigelegt · Fortsetzung offen", C.dangerLt, 10));
+    b.push(dimV(iy, iy + iaaB * is, ix - 24, "über " + iaaB + " m breit", C.dangerLt, 10));
+    b.push(L(1090, 287, 1090, 287 + iaaH * 12, C.stoneLt, 5));
+    b.push(dimV(287, 287 + iaaH * 12, 1120, "ca. " + iaaH + " m hoch", C.stoneLt, 10));
+    b.push(T(710, 485, "Kein geschlossener Beckenumriss und keine Gesamtlänge.", { fill: C.muted, size: 10 }));
+
+    panel(70, 560, 520, 275, "Treppenbefund · zwei Beschreibungsstände", "Zählungen werden nebeneinander gezeigt, nicht harmonisiert");
+    for (var a = 0; a < 3; a++) for (var st = 0; st < 5; st++) {
+      b.push(R(115 + a * 130 + st * 18, 675 - st * 9, 18, 9 + st * 9, { fill: C.water, stroke: C.waterLt, sw: .6 }));
+    }
+    b.push(T(115, 610, "Bericht 2026", { fill: C.waterLt, size: 11 }));
+    b.push(T(115, 638, "3 Abschnitte × je 5 Stufen", { fill: C.ivory, size: 13 }));
+    b.push(L(100, 728, 560, 728, C.stone, 1, "3 5"));
+    b.push(T(115, 758, "Fahrplanstand ab 2004", { fill: C.stoneLt, size: 11 }));
+    b.push(T(115, 785, "mehrere Läufe zu 4–5 · Anzahl der Läufe offen", { fill: C.ivory, size: 12 }));
+
+    panel(650, 560, 520, 275, "Ostseite und Fläche", "Teilbefund und Schätzung ergeben keinen fertigen Beckenplan");
+    var ox = 715, oy = 665, os = 7, oSeen = ost[0] || 30, oApprox = ost[1] || 50;
+    b.push(L(ox, oy, ox + oSeen * os, oy, C.waterLt, 6));
+    b.push(L(ox + oSeen * os, oy, ox + oApprox * os, oy, C.danger, 3, "7 6"));
+    b.push(dimH(ox, ox + oSeen * os, oy - 25, "ca. " + oSeen + " m freigelegt", C.waterLt, 10));
+    b.push(T(ox + oApprox * os, oy + 7, "≈ " + oApprox + " m nur historische Näherung", { fill: C.dangerLt, size: 10, anchor: "end" }));
+    b.push(R(715, 735, 390, 48, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.2 }));
+    b.push(T(910, 765, "Fläche: Größenordnung ½ ha · Umriss offen", { fill: C.ivory, size: 11, anchor: "middle" }));
+
+    b.push(R(70, 870, 1100, 68, { fill: C.night, stroke: C.danger, sw: 1.5, dash: "6 5" }));
+    b.push(T(620, 899, "Bodenlage und maximale Tiefe: nicht angegeben · Grabung nicht abgeschlossen", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(620, 922, "Das Becken des Schelach in Nechemja 3:15 wird nicht mit diesem Befund gleichgesetzt.", { fill: C.muted, size: 10, anchor: "middle" }));
+
+    return shell(card, {
+      W: W, H: H, artLabel: "Schiloach-Becken · Befundregister", body: b.join(""),
+      unitNote: "Meter innerhalb des jeweiligen Befundstands · keine Mittelung",
+      legend: [[C.waterLt, "belegt", "Maß innerhalb einer Quelle"], [C.danger, "gestrichelt", "Mindestmaß, Fortsetzung oder Schätzung"], [C.stoneLt, "getrennte Felder", "Publikationsstände nicht verschmolzen"]],
+      nicht: ["geschlossener Beckenumriss", "Bodenlage und maximale Tiefe", "Gesamtzahl aller Stufen", "Gleichsetzung mit Nechemja 3:15"],
+      foot: "Archäologisches Befundregister · abschnitts- und publikationsgebunden · nicht normativ"
+    });
+  }
+
+  /* ══════════ 19 · Karte 28: Schiloach–Mikdasch · Wegbeziehung ══════════ */
+  function schiloachweg(card) {
+    var W = 1240, H = 980, b = [];
+    function node(x, y, w, h, he, de, col, dash) {
+      b.push(R(x, y, w, h, { fill: C.panel, stroke: col, sw: 2, rx: 9, dash: dash }));
+      b.push(T(x + w / 2, y + 32, he, { fill: C.ivory, size: 17, font: HE, anchor: "middle" }));
+      b.push(T(x + w / 2, y + 58, de, { fill: col, size: 11, anchor: "middle" }));
+    }
+    b.push(T(84, 166, "RELATIVE TOPOLOGIE · KEINE ROUTENREKONSTRUKTION", { fill: C.stoneLt, size: 13, ls: "1.2" }));
+    b.push(T(1125, 178, "N", { fill: C.ivory, size: 14, anchor: "middle" }));
+    b.push(L(1125, 190, 1125, 248, C.ivory, 2));
+    b.push('<path d="M1125 184 l-7 13 h14 z" fill="' + C.ivory + '"/>');
+
+    b.push(T(620, 246, "AZARAH · SÜDWAND", { fill: C.muted, size: 11, anchor: "middle", ls: "1" }));
+    b.push(L(430, 280, 1080, 280, C.stoneLt, 8));
+    b.push(T(430, 306, "W", { fill: C.faint, size: 11, anchor: "middle" }));
+    b.push(T(1080, 306, "O", { fill: C.faint, size: 11, anchor: "middle" }));
+    b.push(R(510, 267, 54, 26, { fill: C.night, stroke: C.waterLt, sw: 2 }));
+    b.push(T(537, 245, "Wassertor", { fill: C.waterLt, size: 12, anchor: "middle" }));
+    b.push(T(537, 326, "in der Südreihe · nahe dem Westen", { fill: C.muted, size: 10, anchor: "middle" }));
+
+    node(100, 670, 300, 86, "שִׁלֹחַ", "Ausgangspunkt · südlich", C.waterLt);
+    node(795, 650, 340, 108, "שַׁעַר הַמַּיִם", "Stadtmauer · anderes Bauwerk", C.dangerLt, "7 5");
+    b.push('<path d="M250 670 C300 570 355 500 430 448 C480 412 515 360 537 295" fill="none" stroke="' + C.waterLt + '" stroke-width="3" stroke-dasharray="8 7"/>');
+    b.push('<path d="M537 294 l-10 15 h20 z" fill="' + C.waterLt + '"/>');
+    b.push(T(360, 535, "von Süd aufwärts nach Nord", { fill: C.waterLt, size: 12, anchor: "middle" }));
+    b.push(T(360, 558, "Verlauf · Länge · Breite · Gefälle offen", { fill: C.dangerLt, size: 10, anchor: "middle" }));
+    b.push(L(620, 620, 620, 800, C.danger, 2, "6 6"));
+    b.push(TR(606, 710, "keine Identität der beiden Wassertore", { fill: C.dangerLt, size: 10 }));
+    b.push(R(100, 820, 1035, 52, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.2 }));
+    b.push(T(618, 852, "Die historische Straße aus Karte 31 liefert keine Norm für diesen liturgischen Weg.", { fill: C.ivory, size: 11, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Wegbeziehung · relative Topologie", body: b.join(""),
+      unitNote: "Ohne Maßstab · nur Ausgang, Ziel und relative Richtung",
+      legend: [[C.waterLt, "belegte Beziehung", "Schiloach → Wassertor der Azarah"], [C.stoneLt, "Südwand", "Tor nur relativ nahe Westen"], [C.danger, "Trennung", "Stadttor und historische Straße nicht gleichgesetzt"]],
+      nicht: ["genauer Verlauf", "Länge und Breite", "Gefälle und Höhenprofil", "Identität mit dem Stadttor"],
+      foot: "Texttopologie · keine Distanz · keine historische oder zukünftige Straßenrekonstruktion"
+    });
+  }
+
+  /* ══════════ 20 · Karte 29: Wasser unter der Schwelle ══════════ */
+  function schwellenwasser(card) {
+    var W = 1240, H = 1000, b = [];
+    function arrow(x1, y1, x2, y2, col, dash) {
+      b.push(L(x1, y1, x2, y2, col, 3, dash));
+      b.push('<path d="M' + x2 + ' ' + y2 + ' l-14 -7 l4 14 z" fill="' + col + '"/>');
+    }
+    b.push(T(80, 166, "JECHESKEL 47:1–2 · ZWEI BEOBACHTUNGSPUNKTE", { fill: C.stoneLt, size: 13, ls: "1.2" }));
+    b.push(R(110, 265, 430, 210, { fill: C.panel, stroke: C.stoneLt, sw: 2, rx: 8 }));
+    b.push(T(325, 305, "הַבַּיִת · DAS HAUS", { fill: C.ivory, size: 16, font: HE, anchor: "middle" }));
+    b.push(L(155, 385, 495, 385, C.stoneLt, 10));
+    b.push(T(325, 414, "Schwelle · Öffnungsform nicht beschrieben", { fill: C.muted, size: 10, anchor: "middle" }));
+    b.push(R(275, 374, 100, 22, { fill: C.night, stroke: C.waterLt, sw: 2 }));
+    b.push(T(325, 356, "Austritt unter der Schwelle", { fill: C.waterLt, size: 11, anchor: "middle" }));
+
+    b.push(R(175, 560, 150, 72, { fill: C.panel, stroke: C.bronze, sw: 2, rx: 7 }));
+    b.push(T(250, 590, "מִזְבֵּחַ", { fill: C.ivory, size: 15, font: HE, anchor: "middle" }));
+    b.push(T(250, 614, "nur Lageanker", { fill: C.bronze, size: 10, anchor: "middle" }));
+    b.push(T(355, 595, "südlich", { fill: C.muted, size: 11 }));
+    arrow(375, 385, 810, 385, C.waterLt);
+    b.push(T(610, 360, "Wasser ostwärts · קָדִימָה", { fill: C.waterLt, size: 12, anchor: "middle" }));
+    b.push(T(610, 414, "Menge · Breite · Tiefe · Profil nicht angegeben", { fill: C.dangerLt, size: 10, anchor: "middle" }));
+
+    b.push(R(850, 310, 270, 150, { fill: C.panel, stroke: C.waterLt, sw: 2, rx: 8 }));
+    b.push(T(985, 350, "שַׁעַר הַקָּדִים", { fill: C.ivory, size: 16, font: HE, anchor: "middle" }));
+    b.push(T(985, 379, "äußeres Osttor", { fill: C.waterLt, size: 12, anchor: "middle" }));
+    b.push(T(985, 405, "zweiter Blick auf dasselbe Wasser", { fill: C.muted, size: 10, anchor: "middle" }));
+    b.push('<path d="M325 265 C330 195 520 195 610 225 C720 260 820 270 900 310" fill="none" stroke="' + C.stoneLt + '" stroke-width="2" stroke-dasharray="7 6"/>');
+    b.push(T(610, 213, "Beobachterweg: durch das Nordtor · außen zum Osttor", { fill: C.stoneLt, size: 11, anchor: "middle" }));
+    b.push(L(610, 224, 610, 180, C.stoneLt, 2));
+    b.push(T(610, 168, "N", { fill: C.ivory, size: 13, anchor: "middle" }));
+
+    b.push(R(110, 705, 1010, 92, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.5 }));
+    b.push(T(615, 740, "Keine hydraulische Form wird ergänzt", { fill: C.dangerLt, size: 13, anchor: "middle" }));
+    b.push(T(615, 770, "Öffnung, Fuge, Rinne oder Rohr bleiben ausdrücklich unbestimmt.", { fill: C.ivory, size: 11, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Schwellenwasser · Lage- und Fließschema", body: b.join(""),
+      unitNote: "Ohne Maßstab · relative Lage und Richtung aus Jechezkel 47:1–2",
+      legend: [[C.waterLt, "Wasser", "Austritt unter der Schwelle · ostwärts"], [C.bronze, "Mizbeach", "nur südlicher Lageanker"], [C.stoneLt, "Beobachterweg", "Nordtor → außen → Osttor"]],
+      nicht: ["Austrittsquerschnitt", "Wassermenge und Gefälle", "Breite und Tiefe", "technische Verbindung zum Wassertor"],
+      foot: "Relative Texttopologie · kein hydraulischer Bauplan · kein numerisches Maß"
+    });
+  }
+
+  /* ══════════ 21 · Karte 30: vier Messstrecken zu je 1000 Ammah ══════════ */
+  function viermessungen(card) {
+    var W = 1240, H = 1010, b = [], x0 = 120, y0 = 390, seg = 240;
+    var stationen = [
+      ["מֵי אָפְסָיִם", "Knöchel · qualitativ"],
+      ["מַיִם בִּרְכָּיִם", "Knie · qualitativ"],
+      ["מֵי מָתְנָיִם", "Lenden · qualitativ"],
+      ["נַחַל אֲשֶׁר לֹא יֵעָבֵר", "nicht durchquerbar · kein Tiefenmaß"]
+    ];
+    b.push(T(80, 166, "VIER GLEICHE LÄNGENSEGMENTE · TIEFEN NUR QUALITATIV", { fill: C.stoneLt, size: 13, ls: "1.1" }));
+    b.push(L(x0, y0, x0 + 4 * seg, y0, C.waterLt, 8));
+    for (var i = 0; i <= 4; i++) {
+      var x = x0 + i * seg;
+      b.push(L(x, y0 - 44, x, y0 + 155, i === 0 ? C.stoneLt : C.waterLt, 1.5, i === 0 ? "" : "4 5"));
+      b.push(T(x, y0 - 58, i === 0 ? "Ausgangspunkt" : String(i), { fill: i === 0 ? C.stoneLt : C.waterLt, size: 11, anchor: "middle" }));
+      if (i < 4) b.push(dimH(x, x + seg, y0 - 20, "1000 Ammah", C.ivory, 11));
+    }
+    stationen.forEach(function (s, i) {
+      var x = x0 + (i + 1) * seg;
+      b.push(R(x - 105, y0 + 72, 210, i === 3 ? 96 : 78, { fill: i === 3 ? "url(#rHatch)" : C.panel, stroke: i === 3 ? C.danger : C.water, sw: 1.5, rx: 7 }));
+      b.push(T(x, y0 + 102, s[0], { fill: C.ivory, size: i === 3 ? 14 : 16, font: HE, anchor: "middle" }));
+      b.push(T(x, y0 + 130, s[1], { fill: i === 3 ? C.dangerLt : C.waterLt, size: 10, anchor: "middle" }));
+    });
+    b.push(dimH(x0, x0 + 4 * seg, y0 + 245, "Σ 4000 Amot · rekonstruiert aus vier aufeinanderfolgenden Segmenten", C.rambam, 12));
+    b.push(T(620, y0 + 292, "Die vierte Station besitzt keinen vierten Körperpunkt und keine numerische Tiefe.", { fill: C.dangerLt, size: 11, anchor: "middle" }));
+    b.push(R(120, 760, 960, 76, { fill: C.night, stroke: C.danger, sw: 1.2, dash: "6 5" }));
+    b.push(T(600, 792, "Breite · Gefälle · Wassermenge · Geschwindigkeit: nicht angegeben", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(600, 818, "Die Körpermarken sind Stationsnamen, keine in Ammot umgerechneten Tiefen.", { fill: C.muted, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Vier Messstrecken · Stationsschema", body: b.join(""),
+      unitNote: "Länge: viermal 1000 Ammah · Tiefe ausschließlich qualitativ",
+      legend: [[C.waterLt, "Längsachse", "vier gleiche Messstrecken"], [C.water, "Station", "Knöchel · Knie · Lenden"], [C.danger, "offen", "vierte Tiefe und Hydraulik nicht beziffert"]],
+      nicht: ["numerische Wassertiefen", "Breite und Gefälle", "Wassermenge und Geschwindigkeit", "moderne Längenumrechnung"],
+      foot: "Jechezkel 47:3–5 · Längen maßstäblich zueinander · Tiefen nicht numerisiert"
+    });
+  }
+
+  /* ══════════ 22 · Karte 31: Aufstiegsstraße · Maßregister ══════════ */
+  function aufstiegsstrasse(card) {
+    var W = 1240, H = 1110, b = [];
+    var ges = firstNumber((firstRow(card, /Gesamtkorridor/i) || {}).mass, 600),
+        area = firstNumber((firstRow(card, /Studienabschnitt/i) || {}).mass, 220),
+        wStudy = firstNumber((firstRow(card, /Breite im Studienabschnitt/i) || {}).mass, 7.5),
+        wPublic = firstNumber((firstRow(card, /Breite in öffentlicher Angabe/i) || {}).mass, 8),
+        slab = numbers((firstRow(card, /Größte Pflasterplatten/i) || {}).mass);
+    function panel(x, y, w, h, title) {
+      b.push(R(x, y, w, h, { fill: C.panel, stroke: C.stone, sw: 1.5, rx: 8 }));
+      b.push(T(x + 18, y + 30, title, { fill: C.stoneLt, size: 12 }));
+    }
+    b.push(T(80, 166, "ARCHÄOLOGISCHE STRASSE · ABSCHNITTSWERTE NICHT VERALLGEMEINERN", { fill: C.stoneLt, size: 13, ls: "1" }));
+    panel(70, 200, 1100, 235, "Längen · zwei verschiedene Bezugsgrößen");
+    var lx = 135, ly = 285, lmax = 940;
+    b.push(L(lx, ly, lx + lmax, ly, C.waterLt, 10));
+    b.push(dimH(lx, lx + lmax, ly - 25, "ca. " + ges + " m Gesamtkorridor · aktueller Besucherweg", C.waterLt, 11));
+    b.push(L(lx, ly + 88, lx + lmax * area / ges, ly + 88, C.stoneLt, 10));
+    b.push(dimH(lx, lx + lmax * area / ges, ly + 63, "ca. " + area + " m Studienabschnitt Area S", C.stoneLt, 11));
+    b.push(T(1075, ly + 95, "keine Gesamtstrecke", { fill: C.dangerLt, size: 10, anchor: "end" }));
+
+    panel(70, 475, 520, 285, "Breiten · Publikationsstände getrennt");
+    var bx = 130, by = 560, bs = 38;
+    b.push(R(bx, by, wStudy * bs, 48, { fill: C.water, stroke: C.waterLt, sw: 1.5 }));
+    b.push(dimH(bx, bx + wStudy * bs, by - 18, "mindestens " + wStudy + " m · Fachstudie", C.waterLt, 10));
+    b.push(R(bx, by + 105, wPublic * bs, 48, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.5 }));
+    b.push(dimH(bx, bx + wPublic * bs, by + 87, "mindestens " + wPublic + " m · IAA-Vermittlung", C.dangerLt, 10));
+    b.push(T(bx, by + 184, "Nicht mitteln · keine Regelbreite für den Gesamtkorridor", { fill: C.muted, size: 10 }));
+
+    panel(650, 475, 520, 285, "Größte dokumentierte Pflasterplatte · Area S");
+    var sl = slab[0] || 2, sw = slab[1] || 1, sh = slab[2] || .5, wt = slab[3] || 2.5;
+    b.push(R(720, 570, sl * 150, sw * 150, { fill: C.panel, stroke: C.stoneLt, sw: 3 }));
+    b.push(dimH(720, 720 + sl * 150, 548, "bis ca. " + sl + " m", C.stoneLt, 10));
+    b.push(dimV(570, 570 + sw * 150, 700, sw + " m", C.stoneLt, 10));
+    b.push(T(1045, 606, "Höhe ca. " + sh + " m", { fill: C.muted, size: 11 }));
+    b.push(T(1045, 635, "Gewicht ca. " + wt + " t", { fill: C.muted, size: 11 }));
+    b.push(T(720, 735, "Extremwert einzelner Platten · nicht jede Platte", { fill: C.dangerLt, size: 10 }));
+
+    b.push(R(70, 800, 1100, 105, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.5 }));
+    b.push(T(620, 836, "Podium vorhanden · Gesamtstufenzahl und Höhenprofil nicht angegeben", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(620, 864, "10.000 Tonnen und 10.000 Kubikmeter sind verschiedene Größen und werden nicht umgerechnet.", { fill: C.ivory, size: 10, anchor: "middle" }));
+    b.push(T(620, 890, "Archäologische Stadtgeschichte · keine Zukunftsnorm für den Mikdasch.", { fill: C.muted, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Aufstiegsstraße · archäologisches Maßregister", body: b.join(""),
+      unitNote: "Meter innerhalb des jeweiligen Abschnitts · frühe römische Zeit",
+      legend: [[C.waterLt, "Längenbefund", "Gesamtkorridor oder Studienabschnitt"], [C.stoneLt, "Fachmaß", "abschnittsgebunden"], [C.danger, "offen/getrennt", "Mindestwert, Widerspruch oder fehlendes Profil"]],
+      nicht: ["einheitliche Regelbreite", "vollständiges Höhenprofil", "Gesamtzahl der Stufen", "Zukunftsnorm oder liturgischer Weg"],
+      foot: "Aufstiegsstraße · archäologische Abschnitte und Publikationsstände getrennt · nicht normativ"
+    });
+  }
+
+  /* ══════════ 23 · Karte 32: Entwässerungskanal · Abschnittsquerschnitte ══════════ */
+  function entwaesserung(card) {
+    var W = 1240, H = 1100, b = [];
+    var s5 = numbers((firstRow(card, /Area S5/i) || {}).mass),
+        s17 = numbers((firstRow(card, /Hauptkanal · Area S17/i) || {}).mass),
+        erh = numbers((firstRow(card, /Erhaltener Unterteil/i) || {}).mass);
+    function panel(x, y, w, h, title, sub) {
+      b.push(R(x, y, w, h, { fill: C.panel, stroke: C.stone, sw: 1.5, rx: 8 }));
+      b.push(T(x + 18, y + 29, title, { fill: C.stoneLt, size: 12 }));
+      b.push(T(x + 18, y + 50, sub, { fill: C.faint, size: 10 }));
+    }
+    b.push(T(80, 166, "DREI ABSCHNITTSBEFUNDE · KEIN EINHEITLICHER GESAMTQUERSCHNITT", { fill: C.stoneLt, size: 13, ls: "1" }));
+    panel(70, 205, 330, 360, "Area S5 · lichter Querschnitt", "voller Abschnittswert · Deckplatten belegt");
+    var s5w = s5[0] || .6, s5h = s5[1] || 1.5, s5s = 150;
+    b.push(R(150, 300, s5w * s5s, s5h * s5s, { fill: "url(#rHatchQ)", stroke: C.waterLt, sw: 3 }));
+    b.push(dimH(150, 150 + s5w * s5s, 278, s5w + " m", C.waterLt, 10));
+    b.push(dimV(300, 300 + s5h * s5s, 130, s5h + " m", C.waterLt, 10));
+    b.push(L(135, 292, 255, 292, C.stoneLt, 8));
+    b.push(T(270, 530, "Breite × Höhe", { fill: C.muted, size: 10, anchor: "middle" }));
+
+    panel(455, 205, 330, 360, "Area S17 · beschädigter Abschnitt", "freigelegte Länge × Breite · nur untere Partien");
+    var s17l = s17[0] || 7, s17w = s17[1] || 1, s17s = 34;
+    b.push(R(500, 330, s17l * s17s, s17w * s17s, { fill: "url(#rHatch)", stroke: C.danger, sw: 2 }));
+    b.push(dimH(500, 500 + s17l * s17s, 307, "ca. " + s17l + " m freigelegt", C.dangerLt, 10));
+    b.push(dimV(330, 330 + s17w * s17s, 482, "ca. " + s17w + " m", C.dangerLt, 10));
+    b.push(T(620, 415, "kein ursprünglicher Gesamtquerschnitt", { fill: C.muted, size: 10, anchor: "middle" }));
+
+    panel(840, 205, 330, 360, "Area S17 · erhaltener Unterteil", "Erhaltungslänge × erhaltene Höhe");
+    var el = erh[0] || 3.5, eh = erh[1] || .6, es = 70;
+    b.push(R(885, 340, el * es, eh * es, { fill: C.panel, stroke: C.stoneLt, sw: 2, dash: "6 5" }));
+    b.push(dimH(885, 885 + el * es, 317, "ca. " + el + " m erhalten", C.stoneLt, 10));
+    b.push(dimV(340, 340 + eh * es, 867, "ca. " + eh + " m", C.stoneLt, 10));
+    b.push(T(1005, 430, "Erhaltungsmaß · keine Ursprungshöhe", { fill: C.dangerLt, size: 10, anchor: "middle" }));
+
+    b.push(T(80, 620, "SYSTEMTRENNUNG", { fill: C.stoneLt, size: 12, ls: "1.4" }));
+    var labs = [
+      ["Gihon → Stadt", "Zuleitung · Erste-Tempel-Periode", C.stoneLt, "andere Anlage"],
+      ["Tyropoeon-Korridor", "städtische Drainage · diese Karte", C.waterLt, "diese Anlage"],
+      ["vom Haus ostwärts", "Jechezkel 47 · Zukunftsstrom", C.dangerLt, "andere Ebene"]
+    ];
+    labs.forEach(function (z, i) {
+      var x = 70 + i * 385;
+      b.push(R(x, 655, 330, 115, { fill: i === 1 ? C.panel : "url(#rHatch)", stroke: z[2], sw: 2, rx: 8 }));
+      b.push(T(x + 165, 690, z[0], { fill: C.ivory, size: 13, anchor: "middle" }));
+      b.push(T(x + 165, 718, z[1], { fill: z[2], size: 10, anchor: "middle" }));
+      b.push(T(x + 165, 746, z[3], { fill: C.muted, size: 10, anchor: "middle" }));
+    });
+    b.push(L(425, 640, 425, 790, C.danger, 2, "6 6"));
+    b.push(L(810, 640, 810, 790, C.danger, 2, "6 6"));
+    b.push(R(70, 820, 1100, 70, { fill: C.night, stroke: C.danger, sw: 1.2, dash: "6 5" }));
+    b.push(T(620, 850, "Gesamtverlauf · Gefälle · hydraulische Leistung: nicht angegeben", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(620, 876, "Abschnittsmaße schließen diese Lücken nicht.", { fill: C.muted, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Entwässerungskanal · Abschnittsregister", body: b.join(""),
+      unitNote: "Meter je Grabungsabschnitt · Querschnitt und Erhaltung getrennt",
+      legend: [[C.waterLt, "S5", "lichter Querschnitt"], [C.danger, "S17", "beschädigter oder offener Befund"], [C.stoneLt, "Trennung", "Zuleitung · Drainage · Zukunftsstrom"]],
+      nicht: ["einheitlicher Gesamtquerschnitt", "Gesamtverlauf und Gefälle", "hydraulische Leistung", "Gleichsetzung der drei Wassersysteme"],
+      foot: "Städtische Drainage · abschnittsgebundene Grabungsmaße · keine Zukunftsnorm"
+    });
+  }
+
   /* ── öffentlich ── */
   var LABEL = {
     grundriss: "Grundriss", masstab: "Maßstabsleiter", flaechen: "Flächenvergleich",
@@ -1640,6 +1952,9 @@ var RISS = (function () {
     wandregister: "Sechs-Register", westfigur: "Westfigur", kammerbloecke: "Kammerblöcke",
     eckhoefe: "Vier Eckhöfe", torzellen: "Torzellen-Modul", hohlraeume: "Unterbauten",
     wasserorte: "Wasserorte", wasserwerk: "Wasserwerk",
+    schiloachbecken: "Schiloach-Becken · Befundregister", schiloachweg: "Schiloach–Mikdasch · Wegbeziehung",
+    schwellenwasser: "Wasser unter der Schwelle", viermessungen: "Vier Messstrecken",
+    aufstiegsstrasse: "Aufstiegsstraße · Maßregister", entwaesserung: "Entwässerungskanal · Abschnitte",
     visionsbezirk: "Visionsbezirk", referenzberg: "Referenzberg", terumah: "Terumat HaKodesch",
     bergtore: "Fünf Bergtore", azarah: "HaAzarah", hoehenstaffel: "Höhenstaffelung",
     torhaus: "Torhaus Jechezkels", haus100: "Haus 100", ulam: "Ulam",
@@ -1653,6 +1968,9 @@ var RISS = (function () {
                trennzone: trennzone, kammern: kammern, wandregister: wandregister, westfigur: westfigur,
                kammerbloecke: kammerbloecke, eckhoefe: eckhoefe, torzellen: torzellen,
                hohlraeume: hohlraeume, wasserorte: wasserorte, wasserwerk: wasserwerk,
+               schiloachbecken: schiloachbecken, schiloachweg: schiloachweg,
+               schwellenwasser: schwellenwasser, viermessungen: viermessungen,
+               aufstiegsstrasse: aufstiegsstrasse, entwaesserung: entwaesserung,
                visionsbezirk: visionsbezirk, referenzberg: referenzberg, terumah: terumah,
                bergtore: bergtore, azarah: azarah, hoehenstaffel: hoehenstaffel,
                torhaus: torhaus, haus100: haus100, ulam: ulam, heichal: heichal, debir: debir }[t];
@@ -1877,6 +2195,103 @@ var RISS = (function () {
       S.nicht = ["Leitungslänge und Querschnitt", "Verbindung aller Objekte", "Ammah-Umrechnung", "Jechezkel-47-Strom"];
       S.legend = [[C.waterLt, "Tanachplatte", "Textaussage"], [C.danger, "offene Platte", "Zusammenhang oder Identifikation offen"], [C.stoneLt, "ohne Maßstab", "keine Distanz oder Höhe"]];
       S.foot = "Quellenmatrix · räumlich getrennt, nicht als Leitung rekonstruiert";
+      return S;
+    }
+
+    if (t === "schiloachbecken") {
+      S.unit = "Meter · Befundstände getrennt"; S.grid = 0; S.breite = 78; S.tiefe = 48;
+      S.boxes.push(box(0, 0, 0, 19, 10, 11, "offen", "PNAS 2025 · mind. 19 × 10 · Höhe 11", "offen"));
+      S.boxes.push(box(28, 0, 0, 21, 8, 12, "offen", "IAA 2026 · 21 freigelegt · über 8 · Höhe ca. 12", "offen"));
+      for (var sb = 0; sb < 3; sb++) {
+        for (var ss = 0; ss < 5; ss++) S.boxes.push(box(sb * 9 + ss * 1.4, 23, ss * .55, 1.4, 8, .55, "zone", sb === 0 && ss === 4 ? "3 × 5 Stufen · Bericht 2026" : ""));
+      }
+      S.boxes.push(box(36, 23, 0, 30, 6, .4, "wasser", "Ostseite · ca. 30 m freigelegt"));
+      S.boxes.push(box(66, 23, 0, 12, 6, .4, "offen", "Fortsetzung bis ca. 50 nur Näherung", "offen"));
+      S.teiler = [24, 52]; S.teilerLabel = "anderer Befund / Maßstab";
+      S.notiz = ["PNAS- und IAA-Maßsatz stehen als getrennte offene Körper; sie werden nicht gemittelt.",
+        "Mindestbreite, freigelegte Länge und Fortsetzung sind keine fertigen Außenmaße.",
+        "Treppen und Ostseite liegen in eigenen Darstellungsregistern; Bodenlage und Beckentiefe bleiben offen."];
+      S.nicht = ["geschlossener Beckenumriss", "Bodenlage und Beckentiefe", "Gesamtzahl der Stufen", "Gleichsetzung mit Nechemja 3:15"];
+      S.legend = [[C.danger, "offene Körper", "Mindest- oder Teilbefund"], [C.waterLt, "Treppen/Seite", "eigener Befundstand"], [C.stoneLt, "Trennebene", "Werte nicht verschmolzen"]];
+      S.foot = "Schiloach-Becken · axonometrisches Befundregister · nicht normativ";
+      return S;
+    }
+
+    if (t === "schiloachweg") {
+      S.unit = "ohne Maßstab · relative Beziehung"; S.grid = 0; S.breite = 90; S.tiefe = 42; S.kompass = true;
+      S.boxes.push(box(4, 28, 0, 22, 10, .6, "wasser", "Schiloach · Ausgang im Süden"));
+      S.boxes.push(box(34, 18, 0, 18, 5, .45, "zone", "Weg nach Norden · Verlauf offen"));
+      S.boxes.push(box(58, 4, 0, 28, 8, .6, "tor", "Wassertor der Azarah · Südreihe nahe Westen"));
+      S.boxes.push(box(60, 29, 0, 26, 9, .6, "offen", "Wassertor der Stadtmauer · anderes Bauwerk", "offen"));
+      S.teiler = [55]; S.teilerLabel = "keine Identität";
+      S.notiz = ["Die Platten zeigen nur Ausgang, Ziel und die relative Bewegung von Süd nach Nord.",
+        "Die Zwischenplatte ist kein rekonstruierter Straßenverlauf und besitzt keine ablesbare Länge oder Breite.",
+        "Das Wassertor der Stadtmauer bleibt vom Wassertor der Azarah getrennt."];
+      S.nicht = ["Weglänge und -breite", "Gefälle", "exakter Verlauf", "historische Straße als Norm"];
+      S.foot = "Schiloach–Mikdasch · relative Topologie, keine Weggeometrie";
+      return S;
+    }
+
+    if (t === "schwellenwasser") {
+      S.unit = "ohne Maßstab · relative Richtung"; S.grid = 0; S.breite = 92; S.tiefe = 42; S.kompass = true;
+      S.boxes.push(box(0, 8, 0, 28, 24, .7, "boden", "Das Haus · Front nach Osten"));
+      S.boxes.push(box(27, 15, 0, 2, 10, .45, "zone", "Schwelle · Form offen"));
+      S.boxes.push(box(29, 18, .1, 48, 4, .3, "wasser", "Wasser ostwärts · Breite/Tiefe offen"));
+      S.boxes.push(box(8, 34, 0, 12, 6, 2.5, "linie", "Mizbeach · nur südlicher Lageanker"));
+      S.boxes.push(box(78, 10, 0, 12, 20, .7, "tor", "äußeres Osttor · zweiter Blickpunkt"));
+      S.notiz = ["Der Wasserstreifen bezeichnet ausschließlich Austritt und Fließrichtung; seine gezeichnete Breite ist kein Maß.",
+        "Der Mizbeach dient nur als Lageanker südlich der rechten Hausschulter.",
+        "Der Beobachterweg über Nordtor und Außenseite wird im 2D-Riss geführt, nicht als Wasserleitung."];
+      S.nicht = ["Öffnung, Fuge, Rinne oder Rohr", "Menge, Breite und Tiefe", "Gefälle", "hydraulische Verbindung zum Wassertor"];
+      S.foot = "Wasser unter der Schwelle · relative Axonometrie ohne Hydraulik"
+      return S;
+    }
+
+    if (t === "viermessungen") {
+      S.unit = "viermal 1000 Ammah · Tiefe qualitativ"; S.grid = 0; S.breite = 88; S.tiefe = 34;
+      var vs = ["Knöchel", "Knie", "Lenden", "nicht durchquerbar"];
+      for (var vm = 0; vm < 4; vm++) {
+        S.boxes.push(box(vm * 22, 10, 0, 20, 14, .5, vm === 3 ? "offen" : "wasser", "1000 Ammah · " + vs[vm], vm === 3 ? "offen" : ""));
+      }
+      S.notiz = ["Alle vier Platten besitzen dieselbe Länge: je 1000 Ammah; die schmalen Zwischenräume markieren nur Messstationen.",
+        "Knöchel, Knie und Lenden sind qualitative Körpermarken und werden nicht in Ammot Höhe umgesetzt.",
+        "Die vierte Platte bedeutet nicht durchquerbar; eine numerische Tiefe fehlt."];
+      S.nicht = ["numerische Wassertiefen", "Breite und Gefälle", "Wassermenge und Geschwindigkeit", "moderne Umrechnung"];
+      S.legend = [[C.waterLt, "gleiche Platte", "je 1000 Ammah"], [C.danger, "offene vierte Platte", "kein Tiefenmaß"], [C.stoneLt, "Folge", "Σ 4000 nur rekonstruiert"]];
+      S.foot = "Vier Messstrecken · Längenfolge maßgleich · Tiefen nur benannt";
+      return S;
+    }
+
+    if (t === "aufstiegsstrasse") {
+      S.unit = "Meter · getrennte Register"; S.grid = 0; S.breite = 98; S.tiefe = 44; S.kompass = true;
+      S.boxes.push(box(0, 0, 0, 58, 7, .6, "wasser", "Gesamtkorridor ca. 600 m · Breite nicht daraus abgeleitet"));
+      S.boxes.push(box(0, 16, 0, 34, 7.5, .6, "fest", "Area S ca. 220 m · mind. 7,5 m breit"));
+      S.boxes.push(box(44, 16, 0, 34, 8, .6, "offen", "öffentliche Angabe · mind. 8 m", "offen"));
+      S.boxes.push(box(84, 12, 0, 10, 5, 2.5, "fest", "größte Platte · 2 × 1 × 0,5 m · ca. 2,5 t"));
+      S.boxes.push(box(0, 34, 0, 78, 6, .6, "offen", "Podium / Stufen / Höhenprofil offen", "offen"));
+      S.teiler = [40, 81]; S.teilerLabel = "anderer Maßstab / Befund";
+      S.notiz = ["Die Plattenlängen sind Registerbalken und stehen nicht in einem gemeinsamen Zeichnungsmaßstab.",
+        "7,5 und 8 m sind Mindestbreiten verschiedener Darstellungsstände und werden nicht gemittelt.",
+        "Der Baukörper zeigt kein Gefälle; Podium, Stufenzahl und Höhenprofil bleiben offen."];
+      S.nicht = ["einheitliche Regelbreite", "Gefälle und Höhenprofil", "Gesamtzahl der Stufen", "Zukunftsnorm"];
+      S.foot = "Aufstiegsstraße · archäologische Maßregister, keine gemeinsame Skala";
+      return S;
+    }
+
+    if (t === "entwaesserung") {
+      S.unit = "Meter · je Abschnitt eigener Maßstab"; S.grid = 0; S.breite = 92; S.tiefe = 42;
+      S.boxes.push(box(0, 0, 0, 12, 20, 15, "wasser", "S5 · lichte 0,6 × 1,5 m"));
+      S.boxes.push(box(28, 0, 0, 34, 10, 6, "offen", "S17 · ca. 7 × 1 m · beschädigt", "offen"));
+      S.boxes.push(box(70, 0, 0, 20, 10, 6, "offen", "S17 Unterteil · 3,5 × 0,6 m erhalten", "offen"));
+      S.boxes.push(box(0, 31, 0, 24, 7, .5, "offen", "Gihon-Zuleitung · andere Anlage", "offen"));
+      S.boxes.push(box(34, 31, 0, 24, 7, .5, "wasser", "Drainage · diese Karte"));
+      S.boxes.push(box(68, 31, 0, 24, 7, .5, "offen", "Jechezkel 47 · andere Ebene", "offen"));
+      S.teiler = [24, 65]; S.teilerLabel = "Abschnitt / System getrennt";
+      S.notiz = ["Die drei oberen Körper sind abschnittsgebundene Querschnitts- oder Erhaltungsregister in eigenen Skalen.",
+        "S17 liefert keinen ursprünglichen Gesamtquerschnitt; moderne Beschädigung und Erhaltung bleiben sichtbar offen.",
+        "Gihon-Zuleitung, städtische Drainage und Jechezkel-47-Strom bilden drei getrennte Systeme."];
+      S.nicht = ["einheitlicher Gesamtquerschnitt", "Gesamtverlauf und Gefälle", "hydraulische Leistung", "Gleichsetzung der Wassersysteme"];
+      S.foot = "Entwässerungskanal · Abschnittsregister und Systemtrennung"
       return S;
     }
 
