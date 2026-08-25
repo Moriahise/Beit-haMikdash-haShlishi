@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="he-IL" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Mikdash-Baukarte 42: Zeitfenster, Verpflichtung, Ausnahme und Feiertagsgrenze der Bauarbeit nach Rambam, Hilchot Beit HaBechirah 1:12.">
+  <title>מִקְדָּשׁ · Baukarte 42 · זְמַן וְסֵדֶר הַבִּנְיָן</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&amp;family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&amp;family=Frank+Ruhl+Libre:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#070909;--night:#0b0e0e;--panel:#101515;--panel2:#141a19;--ivory:#f2ead9;--sand:#d5c6aa;--muted:#a89f8e;--faint:#70756e;--stone:#b8945e;--stone2:#d7bd87;--bronze:#8f653d;--blue:#6e9eaa;--blue2:#9ec2c7;--danger:#c96b62;--success:#7e9d7c;--line:rgba(213,188,135,.20);--line2:rgba(213,188,135,.38);--shadow:0 26px 90px rgba(0,0,0,.34);--serif:'EB Garamond',Georgia,serif;--display:'Cormorant Garamond',Georgia,serif;--hebrew:'Frank Ruhl Libre','Noto Serif Hebrew',serif}
+    *{box-sizing:border-box}html{scroll-behavior:smooth;background:var(--ink)}body{margin:0;background:var(--ink);color:var(--sand);font:17px/1.68 var(--serif)}body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 13% 7%,rgba(184,148,94,.15),transparent 36%),radial-gradient(ellipse at 84% 36%,rgba(110,158,170,.08),transparent 33%),linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.009) 1px,transparent 1px);background-size:auto,auto,42px 42px,42px 42px}a{color:inherit}.skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;z-index:100;background:var(--ivory);color:var(--ink);padding:8px 12px}
+    .topbar{position:sticky;top:0;z-index:60;height:58px;display:flex;background:rgba(7,9,9,.93);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:12px;padding:0 22px;border-right:1px solid var(--line);text-decoration:none;white-space:nowrap}.brand-mark{width:23px;height:23px;border:1px solid var(--stone2);transform:rotate(45deg);position:relative}.brand-mark::after{content:"";position:absolute;inset:5px;border:1px solid var(--blue);background:var(--ink)}.brand-text{font:700 1.05rem var(--hebrew);color:var(--ivory)}.nav{display:flex;overflow:auto;scrollbar-width:none}.nav::-webkit-scrollbar{display:none}.nav a{display:flex;align-items:center;padding:0 14px;text-decoration:none;color:var(--muted);font:italic .82rem var(--display);white-space:nowrap;border-right:1px solid rgba(255,255,255,.035)}.nav a:hover,.nav a:focus{color:var(--ivory);background:rgba(184,146,93,.06)}
+    .page{position:relative;z-index:1;max-width:1220px;margin:auto;padding:0 38px 110px}.hero{min-height:680px;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(360px,.88fr);gap:66px;align-items:center;padding:84px 0 70px;border-bottom:1px solid var(--line)}.kicker{display:flex;align-items:center;gap:14px;color:var(--stone2);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase}.kicker::before{content:"";width:46px;height:1px;background:var(--stone)}.card-no{font:600 clamp(3.5rem,8vw,6.5rem)/.8 var(--display);color:rgba(215,189,135,.18);margin:34px 0 18px;letter-spacing:-.035em}h1,h2,h3,p{margin-top:0}h1{font:700 clamp(2.5rem,5.4vw,5rem)/1.03 var(--hebrew);direction:rtl;text-align:left;color:var(--ivory);margin-bottom:14px}.hero-de{font:italic clamp(1.35rem,2.3vw,2rem)/1.15 var(--display);color:var(--stone2);margin-bottom:24px}.lead{max-width:690px;font-size:1.06rem}.lead strong{color:var(--ivory)}.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}.badge{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line2);border-radius:999px;padding:5px 11px;color:var(--stone2);background:rgba(184,146,93,.055);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase}.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}.badge.b{color:#ddc77f}.badge.open{color:#d49a92;border-color:rgba(201,107,98,.42)}
+    .totem{position:relative;min-height:520px;background:linear-gradient(160deg,rgba(19,26,25,.96),rgba(8,11,11,.99));border:1px solid var(--line2);border-radius:176px 176px 18px 18px;padding:42px 34px 30px;box-shadow:var(--shadow);overflow:hidden}.totem::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 12%,rgba(255,255,255,.025) 49%,transparent 72%)}.totem-cap{text-align:center;font:.88rem var(--hebrew);color:var(--stone2);direction:rtl}.day-orbit{position:relative;height:312px;margin:24px 0 12px}.sun{position:absolute;left:50%;top:22px;transform:translateX(-50%);width:66px;height:66px;border-radius:50%;border:1px solid var(--stone2);background:radial-gradient(circle,rgba(215,189,135,.34),rgba(184,148,94,.04) 68%);box-shadow:0 0 46px rgba(215,189,135,.14)}.arc{position:absolute;left:50%;top:32px;transform:translateX(-50%);width:300px;height:225px;border:2px solid var(--stone);border-bottom:0;border-radius:180px 180px 0 0}.arc::after{content:"";position:absolute;left:-8px;right:-8px;bottom:-2px;height:2px;background:linear-gradient(90deg,var(--blue2),var(--stone2),var(--blue2))}.point{position:absolute;bottom:41px;width:116px;text-align:center}.point::before{content:"";display:block;width:13px;height:13px;margin:0 auto 10px;border-radius:50%;background:var(--ink);border:2px solid var(--blue2);box-shadow:0 0 0 7px rgba(110,158,170,.1)}.point.dawn{left:6px}.point.stars{right:6px}.point b{display:block;font:.95rem var(--hebrew);direction:rtl;color:var(--ivory)}.point span{display:block;color:var(--muted);font-size:.68rem}.window-label{position:absolute;left:50%;top:150px;transform:translateX(-50%);width:220px;text-align:center;padding:8px;background:rgba(7,9,9,.9);border:1px solid var(--line2);color:var(--stone2);font-size:.73rem;letter-spacing:.07em;text-transform:uppercase}.night{position:absolute;left:50%;bottom:0;transform:translateX(-50%);color:var(--danger);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase}.totem-note{text-align:center;color:var(--faint);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;margin:0}
+    .source-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-top:0;background:var(--night)}.layer{padding:22px 19px;border-right:1px solid var(--line);min-height:112px}.layer:last-child{border:0}.layer-code{font:1.55rem/1 var(--display);color:var(--stone2)}.layer b{display:block;color:var(--ivory);font:.88rem var(--hebrew);margin:8px 0 2px}.layer span{display:block;color:var(--muted);font-size:.76rem}.layer.inactive{opacity:.43}.layer.active{background:linear-gradient(180deg,rgba(207,179,109,.075),transparent)}.layer.active .layer-code{color:#ddc77f}
+    .critical{margin-top:54px;background:linear-gradient(125deg,rgba(201,107,98,.075),rgba(16,21,21,.97));border:1px solid rgba(201,107,98,.35);border-radius:12px;overflow:hidden}.critical-head{display:flex;gap:16px;align-items:center;padding:22px 27px;border-bottom:1px solid rgba(201,107,98,.22)}.critical-symbol{font:2.6rem/1 var(--display);color:var(--danger)}.critical h2{font:1.22rem var(--hebrew);direction:rtl;color:var(--ivory);margin:0}.critical-grid{display:grid;grid-template-columns:repeat(4,1fr)}.critical article{padding:21px;border-right:1px solid rgba(201,107,98,.16)}.critical article:last-child{border:0}.critical b{display:block;color:#d7a09a;font-size:.88rem;margin-bottom:6px}.critical p{color:var(--muted);font-size:.81rem;line-height:1.5;margin:0}
+    .section{padding:76px 0 0;scroll-margin-top:76px}.section-head{display:grid;grid-template-columns:74px 1fr auto;gap:20px;align-items:end;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:28px}.roman{font:2.5rem/.8 var(--display);color:var(--stone)}.section-title h2{font:1.7rem/1.1 var(--hebrew);direction:rtl;text-align:left;color:var(--ivory);margin:0}.section-title p{font:italic 1.05rem var(--display);color:var(--muted);margin:3px 0 0}.section-tag{font-size:.67rem;letter-spacing:.11em;text-transform:uppercase;color:var(--stone2);border:1px solid var(--line);padding:6px 9px;border-radius:3px}.intro-grid{display:grid;grid-template-columns:1.18fr .82fr;gap:22px}.paper{background:linear-gradient(150deg,rgba(19,26,25,.94),rgba(13,17,17,.97));border:1px solid var(--line);border-radius:10px;padding:30px;box-shadow:0 14px 45px rgba(0,0,0,.14)}.paper h3{font:1.08rem var(--hebrew);direction:rtl;color:var(--stone2);margin-bottom:11px}.paper p:last-child{margin-bottom:0}.callout{border-left:3px solid var(--blue);background:linear-gradient(110deg,rgba(110,158,170,.09),rgba(16,21,21,.86))}.hebrew-quote{direction:rtl;text-align:right;font:1.17rem/1.85 var(--hebrew);color:var(--ivory);padding:20px;border-right:2px solid var(--stone);background:rgba(184,148,94,.045);margin-top:20px}.quote-source{display:block;direction:ltr;text-align:left;color:var(--muted);font:.73rem var(--serif);margin-top:9px}
+    .rule-band{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-bottom:22px}.rule{background:var(--panel);padding:20px}.rule b{display:block;color:var(--ivory);font:1.05rem var(--display)}.rule span{display:block;color:var(--muted);font-size:.75rem;margin-top:4px}.rule.must b{color:#ddc77f}.rule.exception b{color:var(--blue2)}.rule.open b{color:#d49a92}.table-shell{overflow:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel);box-shadow:0 14px 45px rgba(0,0,0,.12)}table{width:100%;border-collapse:collapse;min-width:1050px}th,td{padding:13px 14px;text-align:left;vertical-align:top;border-bottom:1px solid rgba(215,189,135,.12)}th{font:.76rem var(--hebrew);color:var(--stone2);background:rgba(184,146,93,.07);font-weight:500;white-space:nowrap}td{font-size:.82rem;color:var(--sand)}td strong{color:var(--ivory)}tr.open-row{background:rgba(201,107,98,.045)}.pill{display:inline-block;padding:2px 6px;border-radius:3px;border:1px solid rgba(207,179,109,.3);color:#ddc77f;font-size:.63rem;letter-spacing:.05em;text-transform:uppercase}.pill.exception{color:var(--blue2);border-color:rgba(110,158,170,.3)}.pill.open{color:#d49a92;border-color:rgba(201,107,98,.32)}
+    .orientation{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:24px}.diagram-card{position:relative;background:linear-gradient(160deg,#101716,#090c0c);border:1px solid var(--line2);border-radius:12px;padding:18px;min-height:570px;box-shadow:var(--shadow);overflow:hidden}.diagram-label{position:absolute;z-index:3;left:24px;top:20px;border:1px solid var(--line2);color:var(--stone2);background:rgba(7,9,9,.86);padding:5px 8px;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase}.diagram-card svg{display:block;width:100%;height:auto;min-height:530px}.notes-stack{display:flex;flex-direction:column;gap:14px}.micro{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:19px}.micro h3{font:.96rem var(--hebrew);direction:rtl;text-align:left;color:var(--stone2);margin-bottom:8px}.micro p{font-size:.84rem;color:var(--muted);margin:0}.micro b{color:var(--ivory)}.compare-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.compare{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:23px}.compare-code{font:2.1rem/1 var(--display);color:var(--stone)}.compare h3{font:1rem var(--hebrew);color:var(--ivory);margin:10px 0 7px;direction:rtl;text-align:left}.compare p{font-size:.82rem;color:var(--muted);margin:0}.compare.b{border-top:2px solid #cfb36d}.compare.muted{opacity:.58}
+    .unknown{background:linear-gradient(125deg,rgba(201,107,98,.075),rgba(16,21,21,.97));border:1px solid rgba(201,107,98,.35);border-radius:12px;overflow:hidden}.unknown-head{display:flex;align-items:center;gap:16px;padding:24px 28px;border-bottom:1px solid rgba(201,107,98,.22)}.unknown-symbol{font:2.5rem/1 var(--display);color:var(--danger)}.unknown h3{font:1.25rem var(--hebrew);direction:rtl;color:var(--ivory);margin:0}.unknown-grid{display:grid;grid-template-columns:repeat(2,1fr)}.unknown-item{padding:21px 28px;border-right:1px solid rgba(201,107,98,.15);border-bottom:1px solid rgba(201,107,98,.15)}.unknown-item:nth-child(2n){border-right:0}.unknown-item:last-child{border-bottom:0}.unknown-item b{display:block;color:#d7a09a;margin-bottom:5px;font-size:.88rem}.unknown-item p{font-size:.84rem;color:var(--muted);margin:0}.conclusion{display:grid;grid-template-columns:1fr 1fr;gap:20px}.verdict{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:27px}.verdict h3{font:1.05rem var(--hebrew);direction:rtl;text-align:left;color:var(--stone2)}.verdict ul{margin:0;padding-left:18px}.verdict li{margin:7px 0;color:var(--muted);font-size:.88rem}.verdict.safe{border-top:2px solid var(--success)}.verdict.limit{border-top:2px solid var(--danger)}.source-list{counter-reset:sources;display:grid;grid-template-columns:1fr 1fr;gap:10px}.citation{counter-increment:sources;display:grid;grid-template-columns:34px 1fr;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:15px 17px;text-decoration:none}.citation::before{content:counter(sources,decimal-leading-zero);font:1rem var(--display);color:var(--stone)}.citation b{display:block;color:var(--ivory);font-size:.87rem}.citation span{display:block;color:var(--muted);font-size:.76rem;margin-top:2px}.citation:hover{border-color:var(--line2);background:var(--panel2)}.footer{margin-top:90px;padding:34px 0 10px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:30px;color:var(--faint);font-size:.74rem}.footer-he{font-family:var(--hebrew);direction:rtl;color:var(--stone2)}
+    @media(max-width:980px){.hero{grid-template-columns:1fr;gap:35px}.totem{min-height:470px}.source-strip,.critical-grid,.compare-grid{grid-template-columns:repeat(2,1fr)}.orientation{grid-template-columns:1fr}.intro-grid{grid-template-columns:1fr}}
+    @media(max-width:680px){body{font-size:16px}.topbar{height:52px}.brand{padding:0 13px}.brand-text{display:none}.page{padding:0 16px 72px}.hero{padding:62px 0 44px;min-height:0}.source-strip,.critical-grid,.rule-band,.compare-grid,.unknown-grid,.conclusion,.source-list{grid-template-columns:1fr}.layer,.critical article,.unknown-item{border-right:0}.section{padding-top:58px}.section-head{grid-template-columns:50px 1fr}.section-tag{grid-column:2;justify-self:start}.paper{padding:22px}.diagram-card{padding:8px;min-height:480px}.diagram-card svg{min-height:450px}.footer{display:block}.footer-he{margin-top:10px}}
+    @media print{.topbar{display:none}body{background:#fff;color:#292929;font-size:11pt}body::before{display:none}.page{max-width:none;padding:0}.hero{min-height:0;page-break-after:always}.totem,.paper,.table-shell,.diagram-card,.micro,.compare,.unknown,.verdict,.citation{background:#fff!important;box-shadow:none;border-color:#b9aa91}.section,.paper,.unknown,.diagram-card{break-inside:avoid}.section-title h2,h1,.paper h3,.micro h3,.compare h3,.unknown h3,.verdict h3,.citation b{color:#111}.lead,.paper p,.micro p,.compare p,.unknown-item p,.verdict li,.citation span,td{color:#333}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#content">Zum Inhalt springen</a>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Zum Seitenanfang"><span class="brand-mark" aria-hidden="true"></span><span class="brand-text">בֵּית הַמִּקְדָּשׁ הַשְּׁלִישִׁי</span></a>
+    <nav class="nav" aria-label="Seitennavigation"><a href="#definition">I · Definition</a><a href="#masse">II · Maße</a><a href="#lage">III · Ordnung</a><a href="#vergleich">IV · Vergleich</a><a href="#zeichnung">V · Zeichnung</a><a href="#offen">VI · Offen</a><a href="#fazit">VII · Fazit</a><a href="#quellen">Quellen</a></nav>
+  </header>
+  <main id="content" class="page">
+    <section id="top" class="hero" aria-labelledby="page-title">
+      <div>
+        <div class="kicker">Mikdash-Architektur · Karte 42 von 42</div>
+        <div class="card-no">42 / 42</div>
+        <h1 id="page-title">זְמַן וְסֵדֶר מְלֶאכֶת הַבִּנְיָן</h1>
+        <div class="hero-de">Zeit und Ordnung der Bauarbeit</div>
+        <p class="lead">Die Schlusskarte behandelt kein Bauteil, sondern die <strong>halachische Ordnung des Bauvorgangs</strong>: kein Bau bei Nacht, Beschäftigung mit dem Bau von Alot HaSchachar bis Zet HaKochawim, eine allgemeine persönliche und finanzielle Verpflichtung, eine ausdrückliche Ausnahme und die Grenze des Jom Tov. Daraus entsteht kein Terminplan – die Projektdauer bleibt nicht angegeben.</p>
+        <div class="badges"><span class="badge b">B · Rambam</span><span class="badge">A · explizite Regel</span><span class="badge open">E · Dauer offen</span><span class="badge">Tor VII · Material und Bau</span></div>
+      </div>
+      <aside class="totem" aria-label="Schematische Tagesordnung ohne Uhrzeiten oder Stundenteilung">
+        <div class="totem-cap">מֵעֲלוֹת הַשַּׁחַר עַד צֵאת הַכּוֹכָבִים</div>
+        <div class="day-orbit"><div class="sun" aria-hidden="true"></div><div class="arc"></div><div class="point dawn"><b>עֲלוֹת הַשַּׁחַר</b><span>Beginn des Fensters</span></div><div class="point stars"><b>צֵאת הַכּוֹכָבִים</b><span>Ende des Fensters</span></div><div class="window-label">Bauarbeit · keine Uhrzeit · keine Stundenzahl</div><div class="night">Nacht · kein Bau</div></div>
+        <p class="totem-note">Ordnungsgrafik · keine Stundenachse · kein Projektplan</p>
+      </aside>
+    </section>
+
+    <section class="source-strip" aria-label="Vier Quellenebenen">
+      <div class="layer inactive"><div class="layer-code">A</div><b>יְחֶזְקֵאל</b><span>Bauzeit und Bauorganisation nicht angegeben</span></div>
+      <div class="layer active"><div class="layer-code">B</div><b>מִדּוֹת / רַמְבַּ״ם</b><span>Hauptschicht · Beit HaBechirah 1:12</span></div>
+      <div class="layer inactive"><div class="layer-code">C</div><b>רַמְחַ״ל</b><span>in dieser Karte nicht angegeben</span></div>
+      <div class="layer inactive"><div class="layer-code">D</div><b>אַרְכֵאוֹלוֹגְיָה</b><span>keine archäologische Normquelle</span></div>
+    </section>
+
+    <aside class="critical" aria-labelledby="critical-title">
+      <div class="critical-head"><div class="critical-symbol">!</div><h2 id="critical-title">בְּדִיקָה קְרִיטִית לִפְנֵי הַשִּׂרְטוּט</h2></div>
+      <div class="critical-grid">
+        <article><b>Tor korrigiert</b><p>Fahrplan und Projekt-Knowledge führen Karte 42 in Tor VII. Die veraltete Tor-I-Zeile des Einzelprompts wird nicht übernommen.</p></article>
+        <article><b>Schriftbeleg ergänzt</b><p>Rambam begründet das Nachtverbot mit Bamidbar 9:15: Am Tag richtet man auf, nicht bei Nacht.</p></article>
+        <article><b>Verpflichtung vollständig</b><p>Der Text nennt alle, Männer und Frauen, persönliche und finanzielle Beteiligung sowie die ausdrückliche Ausnahme für Schulkinder.</p></article>
+        <article><b>Textvariante dokumentiert</b><p>Der Schlusssatz steht in Ausgaben mit <span lang="he" dir="rtl">בֵּית</span> und ohne dieses Wort. Beide Textzeugen bestimmen: Der Bau verdrängt Jom Tov nicht.</p></article>
+      </div>
+    </aside>
+
+    <section id="definition" class="section">
+      <div class="section-head"><div class="roman">I</div><div class="section-title"><h2>תַּקְצִיר</h2><p>Kurzdefinition</p></div><div class="section-tag">Bauvorgang</div></div>
+      <div class="intro-grid">
+        <article class="paper">
+          <h3>בַּיּוֹם מְקִימִין</h3>
+          <p>Rambam untersagt den Bau des Mikdasch bei Nacht und setzt das tägliche Arbeitsfenster von Alot HaSchachar bis Zet HaKochawim. Alle sind zum Bauen und Unterstützen mit der eigenen Person und dem eigenen Vermögen verpflichtet – Männer und Frauen, wie beim Mikdasch der Wüste. Schulkinder werden dafür nicht vom Lernen abgezogen, und der Bau verdrängt Jom Tov nicht. Eine Gesamtdauer oder Reihenfolge der Bauabschnitte nennt die Halacha nicht.</p>
+          <div class="hebrew-quote">אֵין בּוֹנִין אֶת הַמִּקְדָּשׁ בַּלַּיְלָה, שֶׁנֶּאֱמַר: ״וּבְיוֹם הָקִים אֶת הַמִּשְׁכָּן״ — בַּיּוֹם מְקִימִין, לֹא בַלַּיְלָה. וְעוֹסְקִין בַּבִּנְיָן מֵעֲלוֹת הַשַּׁחַר עַד צֵאת הַכּוֹכָבִים.<span class="quote-source">Rambam · Hilchot Beit HaBechirah 1:12</span></div>
+        </article>
+        <aside class="paper callout">
+          <h3>מַה הַהֲלָכָה אוֹמֶרֶת</h3>
+          <p><strong>Zeitfenster:</strong> zwei halachische Tageszeitpunkte, keine moderne Uhrzeit.</p>
+          <p><strong>Pflicht:</strong> bauen und unterstützen, persönlich und finanziell.</p>
+          <p><strong>Ausnahme:</strong> Schulkinder werden nicht vom Lernen abgezogen.</p>
+          <p><strong>Grenze:</strong> Jom Tov wird nicht verdrängt.</p>
+        </aside>
+      </div>
+    </section>
+
+    <section id="masse" class="section">
+      <div class="section-head"><div class="roman">II</div><div class="section-title"><h2>מִדּוֹת וּגְבוּלוֹת</h2><p>Zeit-, Pflicht- und Ausnahmeregister</p></div><div class="section-tag">keine Längenangabe</div></div>
+      <div class="rule-band"><div class="rule must"><b>Pflicht</b><span>Tagesfenster, Beteiligung und Feiertagsgrenze</span></div><div class="rule exception"><b>Ausnahme</b><span>Schulkinder bleiben beim Lernen</span></div><div class="rule open"><b>Offen</b><span>Dauer, Reihenfolge und Organisation</span></div><div class="rule"><b>Kein Hiddur</b><span>keine alternative oder schmückende Stufe dieser Karte</span></div></div>
+      <div class="table-shell"><table><thead><tr><th>Regelgegenstand</th><th>Quelle</th><th>Originalangabe</th><th>Einheit</th><th>Achse</th><th>Sicherheit</th><th>Kategorie</th><th>Bemerkung</th></tr></thead><tbody>
+        <tr><td><strong>Nachtverbot</strong></td><td>Rambam BhB 1:12; Bamidbar 9:15</td><td>kein Bau bei Nacht</td><td>entfällt</td><td>Zeit, keine Bauachse</td><td>A · explizit</td><td><span class="pill">Pflicht</span></td><td>Mit Rambams eigenem Schriftbeleg.</td></tr>
+        <tr><td><strong>Tägliches Zeitfenster</strong></td><td>Rambam BhB 1:12</td><td>Alot HaSchachar bis Zet HaKochawim</td><td>Tageszeitpunkte</td><td>Zeit, keine Bauachse</td><td>A · explizit</td><td><span class="pill">Pflicht</span></td><td>Keine Uhrzeit und keine Stundenzahl genannt.</td></tr>
+        <tr><td><strong>Kreis der Verpflichteten</strong></td><td>Rambam BhB 1:12</td><td>alle; Männer und Frauen</td><td>entfällt</td><td>entfällt</td><td>A · explizit</td><td><span class="pill">Pflicht</span></td><td>Wie beim Mikdasch der Wüste.</td></tr>
+        <tr><td><strong>Umfang der Verpflichtung</strong></td><td>Rambam BhB 1:12</td><td>mit der Person und mit dem Vermögen</td><td>entfällt</td><td>entfällt</td><td>A · explizit</td><td><span class="pill">Pflicht</span></td><td>Die praktische Organisationsform wird nicht genannt.</td></tr>
+        <tr><td><strong>Schulkinder</strong></td><td>Rambam BhB 1:12</td><td>nicht vom Lernen abziehen</td><td>entfällt</td><td>entfällt</td><td>A · explizit</td><td><span class="pill exception">Ausnahme</span></td><td>Eigene, ausdrückliche Regelzeile.</td></tr>
+        <tr><td><strong>Feiertagsgrenze</strong></td><td>Rambam BhB 1:12</td><td>Bau verdrängt Jom Tov nicht</td><td>entfällt</td><td>Zeit, keine Bauachse</td><td>A · explizit</td><td><span class="pill">Pflicht</span></td><td>Wörtlicher Schluss; Editionsvariante bei <span lang="he" dir="rtl">בֵּית</span>.</td></tr>
+        <tr class="open-row"><td><strong>Bauzeit und Bauablauf</strong></td><td>keine Quelle in dieser Karte</td><td>nicht angegeben</td><td>nicht angegeben</td><td>entfällt</td><td>E · offen</td><td><span class="pill open">Offen</span></td><td>Keine Dauer, Reihenfolge oder Organisationsform.</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section id="lage" class="section">
+      <div class="section-head"><div class="roman">III</div><div class="section-title"><h2>זְמַן וְסֵדֶר</h2><p>Zeitliche Ordnung statt räumlicher Lage</p></div><div class="section-tag">ohne Uhrzeit</div></div>
+      <div class="orientation">
+        <div class="diagram-card">
+          <div class="diagram-label">Tagesordnung · keine Stundenteilung</div>
+          <svg viewBox="0 0 760 530" role="img" aria-labelledby="svg42-title svg42-desc">
+            <title id="svg42-title">Tagesfenster der Bauarbeit nach Rambam</title>
+            <desc id="svg42-desc">Eine ungeteilte Linie führt von Alot HaSchachar bis Zet HaKochawim. Nacht und Jom Tov sind als Grenzen markiert; keinerlei Uhrzeiten oder Projektdauern erscheinen.</desc>
+            <defs><linearGradient id="day42" x1="0" x2="1"><stop offset="0" stop-color="#6e9eaa"/><stop offset=".5" stop-color="#d7bd87"/><stop offset="1" stop-color="#6e9eaa"/></linearGradient></defs>
+            <text x="380" y="58" text-anchor="middle" fill="#d7bd87" font-family="Frank Ruhl Libre" font-size="22" direction="rtl">בַּיּוֹם מְקִימִין · לֹא בַלַּיְלָה</text>
+            <line x1="115" y1="176" x2="645" y2="176" stroke="url(#day42)" stroke-width="6"/>
+            <g fill="#070909" stroke="#9ec2c7" stroke-width="3"><circle cx="115" cy="176" r="12"/><circle cx="645" cy="176" r="12"/></g>
+            <text x="115" y="139" text-anchor="middle" fill="#f2ead9" font-family="Frank Ruhl Libre" font-size="19">עֲלוֹת הַשַּׁחַר</text>
+            <text x="645" y="139" text-anchor="middle" fill="#f2ead9" font-family="Frank Ruhl Libre" font-size="19">צֵאת הַכּוֹכָבִים</text>
+            <text x="380" y="213" text-anchor="middle" fill="#a89f8e" font-family="EB Garamond" font-size="16">Bauarbeit · keine Uhrzeit · keine Stundenzahl</text>
+            <rect x="102" y="278" width="556" height="154" rx="9" fill="#101515" stroke="rgba(213,188,135,.38)"/>
+            <line x1="241" y1="278" x2="241" y2="432" stroke="rgba(213,188,135,.20)"/><line x1="380" y1="278" x2="380" y2="432" stroke="rgba(213,188,135,.20)"/><line x1="519" y1="278" x2="519" y2="432" stroke="rgba(213,188,135,.20)"/>
+            <g text-anchor="middle" font-family="Frank Ruhl Libre"><text x="171" y="320" fill="#d7bd87" font-size="17">חִיּוּב</text><text x="310" y="320" fill="#d7bd87" font-size="17">הֶקֵּף</text><text x="449" y="320" fill="#9ec2c7" font-size="17">חָרִיג</text><text x="588" y="320" fill="#d7bd87" font-size="17">גְּבוּל</text></g>
+            <g text-anchor="middle" fill="#a89f8e" font-family="EB Garamond" font-size="14"><text x="171" y="355">alle · Männer</text><text x="171" y="375">und Frauen</text><text x="310" y="355">Person und</text><text x="310" y="375">Vermögen</text><text x="449" y="355">Schulkinder</text><text x="449" y="375">bleiben im Lernen</text><text x="588" y="355">Jom Tov wird</text><text x="588" y="375">nicht verdrängt</text></g>
+            <text x="380" y="485" text-anchor="middle" fill="#c96b62" font-family="EB Garamond" font-size="16">Projektdauer · Reihenfolge · Organisation: nicht angegeben</text>
+          </svg>
+        </div>
+        <div class="notes-stack">
+          <article class="micro"><h3>עֲלוֹת הַשַּׁחַר</h3><p>Der Text nennt den halachischen Tagespunkt als Beginn. Eine moderne Uhrzeit hängt von Ort und Datum ab und wird hier nicht eingesetzt.</p></article>
+          <article class="micro"><h3>צֵאת הַכּוֹכָבִים</h3><p>Der Text nennt den Tagespunkt als Ende. Die Karte berechnet daraus keine feste Zahl von Arbeitsstunden.</p></article>
+          <article class="micro"><h3>יוֹם טוֹב</h3><p>Der Bau verdrängt Jom Tov nicht. Die Karte bildet daraus keinen Kalender und keine Feiertagsplanung.</p></article>
+          <article class="micro"><h3>אֵין מֶשֶׁךְ פְּרוֹיֶקְט</h3><p>Das tägliche Fenster ist keine Aussage darüber, wie viele Tage, Monate oder Jahre der Bau dauert.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="vergleich" class="section">
+      <div class="section-head"><div class="roman">IV</div><div class="section-title"><h2>הַשְׁוָאַת הַתַּבְנִיּוֹת</h2><p>Quellenvergleich</p></div><div class="section-tag">reine Ebene B</div></div>
+      <div class="compare-grid">
+        <article class="compare muted"><div class="compare-code">A</div><h3>יְחֶזְקֵאל</h3><p>Der Zukunftstext beschreibt und bemisst die Vision, regelt in dieser Karte aber nicht, wer wann baut oder wie die Bauarbeit organisiert wird.</p></article>
+        <article class="compare b"><div class="compare-code">B</div><h3>רַמְבַּ״ם</h3><p>Beit HaBechirah 1:12 enthält Nachtverbot, Tagesfenster, Verpflichtung, Personenkreis, Schulkinder-Ausnahme und Feiertagsgrenze. Bamidbar 9:15 ist Rambams eigener Schriftbeleg.</p></article>
+        <article class="compare muted"><div class="compare-code">C</div><h3>רַמְחַ״ל</h3><p>Für diese arbeitszeitliche Halacha nicht als Quelle angegeben. Es wird keine zusätzliche Ablauflehre in die Rambam-Zeile eingesetzt.</p></article>
+        <article class="compare muted"><div class="compare-code">+</div><h3>מְפָרְשִׁים</h3><p>Weitere Kommentatoren sind für die Kernaussage nicht erforderlich. Die Karte dokumentiert lediglich die kleine Textvariante des Schlusssatzes zwischen geprüften Ausgaben.</p></article>
+      </div>
+    </section>
+
+    <section id="zeichnung" class="section">
+      <div class="section-head"><div class="roman">V</div><div class="section-title"><h2>תַּרְשִׁים</h2><p>Ordnungsbild ohne Terminplan</p></div><div class="section-tag">kein Maßstab</div></div>
+      <div class="intro-grid">
+        <article class="paper"><h3>חַלּוֹן יוֹמִי, לֹא לוּחַ בִּנְיָן</h3><p>Die Grafik besitzt nur zwei benannte Tagespunkte und ein durchgehendes Arbeitsfenster. Sie zeigt keine Stunden, Schichten, Gewerke, Bauphasen oder Personalzahlen. Die Tafel darunter ordnet die vier rechtlichen Aussagen – Verpflichtung, Umfang, Ausnahme und Feiertagsgrenze – ohne daraus eine moderne Baustellenorganisation abzuleiten.</p><p>Ein Balkenplan wäre hier nicht bloß unbelegt, sondern methodisch irreführend: Er würde gerade jene Projektdauer und Reihenfolge suggerieren, die Rambam 1:12 nicht nennt.</p></article>
+        <aside class="paper callout"><h3>מַפְתֵּחַ הַמְּקוֹרוֹת</h3><p><span class="pill">B · bronze</span> Rambam und sein Schriftbeleg.</p><p><span class="pill exception">Blau</span> ausdrückliche Ausnahme.</p><p><span class="pill open">Rot</span> nicht angegebene Planung.</p><p><strong>Maßstabsstatus:</strong> entfällt; dies ist eine Ordnungsgrafik ohne Stundenteilung.</p></aside>
+      </div>
+    </section>
+
+    <section id="offen" class="section">
+      <div class="section-head"><div class="roman">VI</div><div class="section-title"><h2>מַה אֵין אָנוּ יוֹדְעִים</h2><p>Was wir nicht wissen</p></div><div class="section-tag">fünf offene Felder</div></div>
+      <div class="unknown"><div class="unknown-head"><div class="unknown-symbol">?</div><h3>הַהֲלָכָה אֵינָהּ לוּחַ זְמַנִּים</h3></div><div class="unknown-grid">
+        <div class="unknown-item"><b>Dauer des Baus</b><p>Die Halacha nennt keine Projektdauer; es wird keine geschätzt.</p></div>
+        <div class="unknown-item"><b>Reihenfolge der Bauabschnitte</b><p>Aus dem täglichen Fenster folgt keine Abfolge einzelner Bauteile.</p></div>
+        <div class="unknown-item"><b>Organisationsform</b><p>Keine Schichtplanung, Gewerkeordnung, Personalzahl oder moderne Terminlogik wird genannt.</p></div>
+        <div class="unknown-item"><b>Praktische Erfüllungsform</b><p><span lang="he" dir="rtl">בְּעַצְמָן וּבִמְמוֹנָם</span> nennt Person und Vermögen, nicht das Verwaltungsverfahren.</p></div>
+        <div class="unknown-item"><b>Schabbat in diesem Satz</b><p>Diese Halacha nennt ausdrücklich Jom Tov. Was aus anderen Halachot für Schabbat folgt, wird nicht aus dieser einzelnen Textzeile ergänzt.</p></div>
+      </div></div>
+    </section>
+
+    <section id="fazit" class="section">
+      <div class="section-head"><div class="roman">VII</div><div class="section-title"><h2>מַסְקָנַת בִּנְיָן</h2><p>Bau-Fazit</p></div><div class="section-tag">Abschlusskarte</div></div>
+      <div class="conclusion">
+        <article class="verdict safe"><h3>בָּטוּחַ מִן הַמָּקוֹר</h3><ul><li>Kein Bau des Mikdasch bei Nacht.</li><li>Bauarbeit von Alot HaSchachar bis Zet HaKochawim, ohne Uhrzeit oder Stundenzahl.</li><li>Alle sind mit Person und Vermögen verpflichtet – Männer und Frauen.</li><li>Schulkinder werden nicht vom Lernen abgezogen.</li><li>Der Bau verdrängt Jom Tov nicht.</li></ul></article>
+        <article class="verdict limit"><h3>שִׁחְזוּר קְלָסִי</h3><ul><li>Keine klassische Rekonstruktion ist erforderlich.</li><li>Insbesondere existiert in dieser Karte keine Bauzeitprognose.</li><li>Keine moderne Projektorganisation wird aus dem Wortlaut erzeugt.</li></ul></article>
+        <article class="verdict"><h3>מַרְאֵה מַשְׁוֶה</h3><ul><li>Keine zusätzliche Vergleichsreferenz wird benötigt.</li><li>Bamidbar 9:15 erscheint ausschließlich als Rambams eigener Beleg für die Tagesregel.</li></ul></article>
+        <article class="verdict"><h3>אַרְכֵאוֹלוֹגְיָה</h3><ul><li>Keine archäologische historische Information ist für diese Halacha erforderlich.</li><li>Historische Bauzeiten werden nicht als Norm oder Zukunftsprognose verwendet.</li></ul></article>
+      </div>
+      <div class="hebrew-quote" style="margin-top:22px">וְהַכֹּל חַיָּבִין לִבְנוֹת וּלְסַעֵד בְּעַצְמָן וּבִמְמוֹנָם — אֲנָשִׁים וְנָשִׁים, כְּמִקְדַּשׁ הַמִּדְבָּר. וְאֵין מְבַטְּלִין תִּינוֹקוֹת שֶׁל בֵּית רַבָּן לַבִּנְיָן. וְאֵין בִּנְיַן בֵּית הַמִּקְדָּשׁ דּוֹחֶה יוֹם טוֹב.<span class="quote-source">Rambam · Beit HaBechirah 1:12 · Schlusslesart der Daat-Ausgabe; Chabad liest am Satzende ohne בֵּית</span></div>
+    </section>
+
+    <section id="quellen" class="section">
+      <div class="section-head"><div class="roman">Q</div><div class="section-title"><h2>הַמְּקוֹרוֹת</h2><p>Geprüfter Quellenapparat</p></div><div class="section-tag">Primärtext doppelt geprüft</div></div>
+      <div class="source-list">
+        <a class="citation" href="https://www.chabad.org/library/article_cdo/aid/1007194/jewish/Beit-Habechirah-Chapter-1.htm" target="_blank" rel="noopener"><span><b>Rambam · Beit HaBechirah 1:12</b><span>Hebräischer Text und englische Übersetzung; sämtliche Regeln der Karte.</span></span></a>
+        <a class="citation" href="https://daat.ac.il/he-il/toshba/rambam/avoda/bet-habhira/bet-habehira1.htm?printview=true" target="_blank" rel="noopener"><span><b>Rambam · Daat-Textausgabe</b><span>Zweite hebräische Textkontrolle einschließlich der Schlussvariante.</span></span></a>
+        <a class="citation" href="https://www.sefaria.org/Mishneh_Torah%2C_The_Chosen_Temple.1.12" target="_blank" rel="noopener"><span><b>Mishneh Torah · Sefaria</b><span>Zusätzlicher digitaler Textzeuge für Halacha 1:12.</span></span></a>
+        <a class="citation" href="https://mechon-mamre.org/p/pt/pt0409.htm" target="_blank" rel="noopener"><span><b>Bamidbar 9:15 · Mechon Mamre</b><span>Masoretischer Schrifttext: <span lang="he" dir="rtl">וּבְיוֹם הָקִים אֶת־הַמִּשְׁכָּן</span>.</span></span></a>
+        <a class="citation" href="https://www.sefaria.org/Numbers.9.15" target="_blank" rel="noopener"><span><b>Bamidbar 9:15 · Sefaria</b><span>Zweite Textkontrolle des von Rambam angeführten Verses.</span></span></a>
+        <a class="citation" href="https://he.wikisource.org/wiki/רמב%22ם_הלכות_בית_הבחירה_א" target="_blank" rel="noopener"><span><b>Hilchot Beit HaBechirah 1 · Wikisource</b><span>Weiterer hebräischer Vergleichstext.</span></span></a>
+      </div>
+    </section>
+    <footer class="footer"><span>Baukarte 42 / 42 · Tor VII · Material und Bauausführung · Abschluss des Fahrplans</span><span class="footer-he">מַה שֶּׁלֹּא אָמַר הַמָּקוֹר — אֵין מוֹסִיפִים</span></footer>
+  </main>
+</body>
+</html>
