@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════════════════════════════════
-   RISS v1.5.0 — aus einer Mikdash-Baukarte wird eine Zeichnung.
+   RISS v1.6.0 — aus einer Mikdash-Baukarte wird eine Zeichnung.
 
    Gezeichnet wird ausschließlich, was die Maßtabelle der Karte belegt.
    Was dort offen bleibt, erscheint als offen und wird nicht ergänzt.
@@ -10,7 +10,7 @@
 var RISS = (function () {
   "use strict";
 
-  var VERSION = "1.5.0";              /* Karten 01–32 · vollständige Kartenprüfung */
+  var VERSION = "1.6.0";              /* Karten 01–42 · vollständige Kartenprüfung */
 
   var C = {
     ink: "#070909", night: "#0B0E0E", panel: "#101515",
@@ -162,7 +162,7 @@ var RISS = (function () {
       var head = [].slice.call(table.querySelectorAll("thead th")).map(function (th) { return strip(th.textContent); });
       if (!head.length) return;
       function idx(re) { for (var i = 0; i < head.length; i++) if (re.test(head[i])) return i; return -1; }
-      var ib = idx(/^(?:Bauteil|Gegenstand)/i), im = idx(/Originalmaß|^Wert$|^Maß$/i), ie = idx(/^Einheit$/i), ia = idx(/^Achse/i);
+      var ib = idx(/^(?:Bauteil|Gegenstand|Regelgegenstand)/i), im = idx(/Originalmaß|Originalangabe|^Wert$|^Maß$/i), ie = idx(/^Einheit$/i), ia = idx(/^Achse/i);
       if (ib < 0 || im < 0 || ie < 0 || ia < 0) return;          /* keine Maßtabelle */
       var iq = idx(/^Quelle$/i), is = idx(/Sicherheit|^Schicht$/i), ir = idx(/Bemerkung|Quelle und Aussage|Befund|Zeitstand/i),
           it = idx(/Bauteiltyp|^Typ$/i);
@@ -317,6 +317,20 @@ var RISS = (function () {
     if (nr === "30" || (/Erste Strecke/i.test(text) && /Vierte Strecke/i.test(text) && /nicht mehr durchquerbar|לֹא יֵעָבֵר/i.test(text))) return "viermessungen";
     if (nr === "31" || (/Gesamtkorridor/i.test(text) && /Studienabschnitt Area S/i.test(text) && /Pflasterplatten/i.test(text))) return "aufstiegsstrasse";
     if (nr === "32" || (/Hauptkanal · Area S5/i.test(text) && /Hauptkanal · Area S17/i.test(text) && /ABGRENZUNG III/i.test(text))) return "entwaesserung";
+    /* Karten 33–42 sind Schnittstellen-, Vergleichs- und Regelkarten.
+       Zahlen aus verschiedenen Quellenebenen oder reine Geltungsregeln
+       dürfen nicht vom allgemeinen Rechteck-/Streckenparser verschmolzen
+       oder auf das Verortungs-Fallback reduziert werden. */
+    if (nr === "33" || (/Südliche Bergtore/i.test(text) && /Straßenkorridor/i.test(text) && /Torzuordnung/i.test(text))) return "suedzugang";
+    if (nr === "34" || (/Verbleibender Streifen/i.test(text) && /Freifläche/i.test(text) && /Einheit nach Rashi/i.test(text))) return "stadtmigrasch";
+    if (nr === "35" || (/Mischkeney Eljon/i.test(text) && /Tosafot Jom Tov/i.test(text) && /künftiger Bau nicht vollständig/i.test(text))) return "auslegermodelle";
+    if (nr === "36" || (/Anker I · Heichal/i.test(text) && /Anker IV · Ulam/i.test(text) && /drei.*Quell/i.test(text))) return "quellenschichten";
+    if (nr === "37" || (/Heichal · Dreiklang/i.test(text) && /Asarah · Umfassung/i.test(text) && /unverzichtbaren Baukörper/i.test(text))) return "baukoerperordnung";
+    if (nr === "38" || (/Hauptmaterial/i.test(text) && /Bearbeitungsort/i.test(text) && /Ganzheit der Steine/i.test(text))) return "steinordnung";
+    if (nr === "39" || (/Hervortretendes Holz/i.test(text) && /Reichweite nach Ra.?avad/i.test(text) && /Achsadraot/i.test(text))) return "holzreichweite";
+    if (nr === "40" || (/Pflasterung der Asarah/i.test(text) && /Gelöster Bodenstein/i.test(text) && /Hiddur III/i.test(text))) return "pflasterhiddur";
+    if (nr === "41" || (/Holzverkleidung/i.test(text) && /Sich wendende Türteile/i.test(text) && /Ulam-Front/i.test(text))) return "oberflaechen";
+    if (nr === "42" || (/Nachtverbot/i.test(text) && /Alot HaSchachar/i.test(text) && /Schulkinder/i.test(text))) return "bauzeit";
     if (/טְרַקְסִין|Trachsin|Zwischenzone/i.test(text)) return "trennzone";
     if (/הַתָּאִים|Seitenkammern/i.test(text) && /33|drei Geschosse|3 Geschosse/i.test(text)) return "kammern";
     if (g.rect && g.rect.L && g.rect.B) return "grundriss";
@@ -1944,6 +1958,395 @@ var RISS = (function () {
     });
   }
 
+  /* ══════════ 24 · Karte 33: südlicher Zugang · zwei Ebenen ══════════ */
+  function suedzugang(card) {
+    var W = 1240, H = 1020, b = [];
+    b.push(T(80, 166, "B-REFERENZPLAN UND D-BEFUND · KEINE TORZUORDNUNG", { fill: C.stoneLt, size: 13, ls: "1.1" }));
+    b.push(R(70, 205, 1100, 330, { fill: C.panel, stroke: C.stone, sw: 1.5, rx: 9 }));
+    b.push(T(95, 238, "B · SÜDSEITE DES HAR HABAJIT", { fill: C.rambam, size: 12 }));
+    b.push(L(260, 335, 1080, 335, C.stoneLt, 9));
+    [505, 815].forEach(function (x, i) {
+      b.push(R(x - 30, 320, 60, 30, { fill: C.night, stroke: C.waterLt, sw: 2, dash: "5 4" }));
+      b.push(T(x, 300, "Chuldah " + (i + 1), { fill: C.waterLt, size: 11, anchor: "middle" }));
+      b.push(T(x, 378, "Position schematisch", { fill: C.dangerLt, size: 9, anchor: "middle" }));
+    });
+    b.push(T(670, 430, "2 Tore an der Südseite · Koordinaten entlang der Mauer nicht angegeben", { fill: C.ivory, size: 12, anchor: "middle" }));
+    b.push(R(880, 400, 210, 82, { fill: C.night, stroke: C.rambam, sw: 1.5 }));
+    b.push(T(985, 430, "lichte Öffnung", { fill: C.muted, size: 10, anchor: "middle" }));
+    b.push(T(985, 458, "10 breit × 20 hoch · Amot", { fill: C.ivory, size: 12, anchor: "middle" }));
+
+    b.push(R(70, 575, 1100, 240, { fill: C.panel, stroke: C.water, sw: 1.5, rx: 9 }));
+    b.push(T(95, 608, "D · FRÜHRÖMISCHER STRASSENKORRIDOR", { fill: C.waterLt, size: 12 }));
+    b.push('<path d="M175 765 C245 720 285 675 335 625" fill="none" stroke="' + C.waterLt + '" stroke-width="8" stroke-dasharray="10 7"/>');
+    b.push('<path d="M335 625 l-16 5 l11 12 z" fill="' + C.waterLt + '"/>');
+    b.push(T(245, 700, "Korridor zum Bereich der Südwestecke", { fill: C.waterLt, size: 11, anchor: "middle" }));
+    b.push(L(500, 635, 500, 765, C.stoneLt, 1.5));
+    b.push(dimV(635, 765, 530, "ca. 360 m südlich · Lage des untersuchten Abschnitts", C.stoneLt, 10));
+    b.push(T(735, 695, "360 m ist keine Länge der Gesamtstraße", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(735, 728, "Zieltor historisch und künftig offen", { fill: C.ivory, size: 12, anchor: "middle" }));
+    b.push(L(620, 545, 620, 835, C.danger, 2, "7 6"));
+    return shell(card, {
+      W: W, H: H, artLabel: "Südlicher Zugang · Schnittstellenschema", body: b.join(""),
+      unitNote: "B: Amot am Tor · D: Meter als Befundlage · Ebenen getrennt",
+      legend: [[C.rambam, "B-Ebene", "zwei Chuldah-Tore, Öffnung 10 × 20"], [C.waterLt, "D-Ebene", "Straßenkorridor zur Südwestecke"], [C.danger, "offen", "keine Zuordnung Straße → bestimmtes Tor"]],
+      nicht: ["Positionen der beiden Tore", "Gesamtlänge der Straße", "historisches Zieltor", "künftige Straßenführung"],
+      foot: "Südlicher Zugang · halachischer Referenzplan und Archäologie nicht verschmolzen"
+    });
+  }
+
+  /* ══════════ 25 · Karte 34: Stadt und Migrasch ══════════ */
+  function stadtmigrasch(card) {
+    var W = 1240, H = 1110, b = [], x = 390, y = 230, city = 360, ring = 20;
+    b.push(T(80, 166, "STADTFIGUR · ZAHLEN BELEGT, EINHEIT IM VERS NICHT GENANNT", { fill: C.stoneLt, size: 13, ls: "1" }));
+    b.push(R(x - ring, y - ring, city + 2 * ring, city + 2 * ring, { fill: "url(#rHatchQ)", stroke: C.waterLt, sw: 2 }));
+    b.push(R(x, y, city, city, { fill: C.panel, stroke: C.stoneLt, sw: 4 }));
+    b.push(T(x + city / 2, y + city / 2 - 6, "הָעִיר", { fill: C.ivory, size: 28, font: HE, anchor: "middle" }));
+    b.push(T(x + city / 2, y + city / 2 + 24, "4.500 × 4.500 · Einheit offen", { fill: C.stoneLt, size: 12, anchor: "middle" }));
+    b.push(dimH(x, x + city, y - 48, "4.500 · Nordseite", C.ivory, 11));
+    b.push(dimV(y, y + city, x - 48, "4.500 · Westseite", C.ivory, 11));
+    b.push(T(x + city / 2, y + city + 55, "Umfang 18.000 = vier Seiten · keine eigene Seitenlänge", { fill: C.muted, size: 10, anchor: "middle" }));
+    b.push(T(x + city + ring + 16, y + city / 2, "Migrasch 250 je Seite", { fill: C.waterLt, size: 11 }));
+    function gateH(xx, yy) { b.push(R(xx - 9, yy - 5, 18, 10, { fill: C.night, stroke: C.rambam, sw: 1.4 })); }
+    function gateV(xx, yy) { b.push(R(xx - 5, yy - 9, 10, 18, { fill: C.night, stroke: C.rambam, sw: 1.4 })); }
+    for (var i = 1; i <= 3; i++) {
+      var q = i / 4;
+      gateH(x + city * q, y); gateH(x + city * q, y + city);
+      gateV(x, y + city * q); gateV(x + city, y + city * q);
+    }
+    b.push(T(x + city + 88, y + 35, "12 Tore", { fill: C.rambam, size: 12 }));
+    b.push(T(x + city + 88, y + 58, "3 je Seite · Öffnungsmaß offen", { fill: C.muted, size: 10 }));
+
+    b.push(R(70, 700, 500, 130, { fill: C.panel, stroke: C.stone, sw: 1.5, rx: 8 }));
+    b.push(T(95, 733, "VERBLEIBENDER STREIFEN", { fill: C.stoneLt, size: 11 }));
+    b.push(R(95, 762, 420, 38, { fill: C.water, stroke: C.waterLt, sw: 1.2 }));
+    b.push(T(305, 788, "5.000 breit über 25.000 Länge · Einheit offen", { fill: C.ivory, size: 11, anchor: "middle" }));
+    b.push(T(95, 817, "Kontextstreifen · nicht im Maßstab der Stadtfigur", { fill: C.dangerLt, size: 9 }));
+
+    b.push(R(625, 700, 545, 130, { fill: C.panel, stroke: C.danger, sw: 1.5, rx: 8 }));
+    b.push(T(650, 733, "KOMMENTARVARIANTEN · KEINE ENTSCHEIDUNG", { fill: C.dangerLt, size: 11 }));
+    b.push(T(650, 773, "Raschi: 4.500 / 18.000 als Kanim", { fill: C.ivory, size: 12 }));
+    b.push(T(650, 802, "Radak: 4.500 als Amot", { fill: C.ivory, size: 12 }));
+    b.push(L(895, 745, 895, 818, C.danger, 1.5, "5 5"));
+    b.push(T(920, 785, "Verswortlaut bleibt ohne Einheit", { fill: C.muted, size: 10 }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Stadt und Migrasch · Zahlenfigur", body: b.join(""),
+      unitNote: "Verszahlen ohne genanntes Einheitswort · Kommentarvarianten getrennt",
+      legend: [[C.stoneLt, "Stadt", "vier Seiten zu 4.500"], [C.waterLt, "Migrasch", "250 je Richtung"], [C.rambam, "Tore", "12 · drei je Seite"]],
+      nicht: ["Entscheidung Kanim oder Amot", "Toröffnungsmaße", "Gebäude und Straßen der Stadt", "Verschmelzung mit dem heiligen Landbezirk"],
+      foot: "Jechezkel 48 · proportionale Zahlenfigur innerhalb der Versebene · Einheit offen"
+    });
+  }
+
+  /* ══════════ 26 · Karte 35: Auslegermodelle ══════════ */
+  function auslegermodelle(card) {
+    var W = 1240, H = 1080, b = [];
+    var items = [
+      ["רַמְחַ״ל", "Ramchal", "zusammenhängende Zukunftsdeutung", C.rambam],
+      ["הַגְּרָ״א", "Gra", "Kommentar + frühe Plantradition", C.stoneLt],
+      ["מַלְבִּי״ם", "Malbim", "durchgerechnete Rekonstruktion", C.waterLt],
+      ["תּוֹסְפוֹת יוֹם טוֹב", "Tosafot Jom Tov", "eigenes Planwerk · 1602", C.stoneLt],
+      ["רַשִׁ״י", "Raschi", "Textkommentar · Nichtwissen benannt", C.dangerLt],
+      ["רַדַ״ק", "Radak", "künftige Erklärung durch Elijahu", C.dangerLt],
+      ["אַבַּרְבַּנְאֵל", "Abarbanel", "Zweck und Zukunftsbezug · teilgeprüft", C.waterLt]
+    ];
+    b.push(T(80, 166, "AUSLEGUNGSMODELLE · KEIN EINZIGER ABSCHLIESSENDER GESAMTPLAN", { fill: C.stoneLt, size: 13, ls: "1" }));
+    items.forEach(function (z, i) {
+      var col = i < 4 ? i : i - 4, row = i < 4 ? 0 : 1;
+      var x = 65 + col * 290, y = 215 + row * 235;
+      b.push(R(x, y, 255, 175, { fill: C.panel, stroke: z[3], sw: 1.8, rx: 9, dash: i >= 4 && i <= 5 ? "6 5" : "" }));
+      b.push(T(x + 127.5, y + 48, z[0], { fill: C.ivory, size: 19, font: HE, anchor: "middle" }));
+      b.push(T(x + 127.5, y + 78, z[1], { fill: z[3], size: 12, anchor: "middle" }));
+      b.push(T(x + 127.5, y + 115, z[2], { fill: C.muted, size: 10, anchor: "middle" }));
+      b.push(T(x + 127.5, y + 143, "Zahlen ausschließlich in den Sachkarten", { fill: C.faint, size: 9, anchor: "middle" }));
+    });
+    b.push(R(935, 450, 255, 175, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.8, rx: 9 }));
+    b.push(T(1062, 493, "רַמְבַּ״ם", { fill: C.ivory, size: 19, font: HE, anchor: "middle" }));
+    b.push(T(1062, 527, "Rahmenaussage", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(1062, 563, "künftiger Bau nicht vollständig erklärt", { fill: C.ivory, size: 10, anchor: "middle" }));
+    b.push(T(1062, 593, "Grenze für jede Modellplatte", { fill: C.muted, size: 9, anchor: "middle" }));
+    b.push(R(65, 700, 1125, 105, { fill: C.night, stroke: C.danger, sw: 1.5, dash: "7 6" }));
+    b.push(T(627, 742, "Die Platten bezeichnen Methoden und Kommentartraditionen, keine räumlichen Bauteile.", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(627, 775, "Autorschaft von Text, Edition, Zeichnung und späterem Planblatt wird nicht pauschal gleichgesetzt.", { fill: C.ivory, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Auslegermodelle · Quellenmatrix", body: b.join(""),
+      unitNote: "Keine Bauachse · Modellstatus und methodische Reichweite",
+      legend: [[C.rambam, "Leitmodell", "Projektentscheidung, kein Abschlussplan"], [C.stoneLt, "Plantradition", "Kommentar oder eigenes Planwerk"], [C.danger, "Grenze", "erklärtes Nichtwissen / Rambams Rahmen"]],
+      nicht: ["ein verschmolzener Gesamtplan", "Übertragung fremder Zahlen", "pauschale Plan-Autorschaft", "abschließende Zukunftshalacha"],
+      foot: "Quellenmatrix · Modelle vergleichbar, aber nicht zu einem Baukörper addiert"
+    });
+  }
+
+  /* ══════════ 27 · Karte 36: gemeinsame Anker, offene Ebenen ══════════ */
+  function quellenschichten(card) {
+    var W = 1240, H = 1130, b = [], x0 = 310, cols = ["A · Jechezkel", "B · Middot / Rambam", "C · Ramchal"];
+    b.push(T(80, 166, "GEMEINSAME ANKER · KEINE BEHAUPTETE IDENTITÄT DER GESAMTPLÄNE", { fill: C.stoneLt, size: 13, ls: ".9" }));
+    b.push(T(95, 230, "BAUTEIL / MASS", { fill: C.muted, size: 10 }));
+    cols.forEach(function (c, i) {
+      b.push(R(x0 + i * 270, 198, 240, 54, { fill: C.panel, stroke: i === 2 ? C.rambam : C.stone, sw: 1.4 }));
+      b.push(T(x0 + i * 270 + 120, 231, c, { fill: i === 2 ? C.rambam : C.stoneLt, size: 11, anchor: "middle" }));
+    });
+    var rows = [
+      ["Heichal innen · 40 × 20 Amot", [1, 1, 0]],
+      ["Eingangsbreite · 10 Amot", [1, 1, 0]],
+      ["Kodesch HaKodaschim · 20 × 20", [1, 1, 1]],
+      ["Ulam-Tiefe · 11 Amot", [1, 1, 0]]
+    ];
+    rows.forEach(function (r, j) {
+      var y = 275 + j * 82;
+      b.push(R(70, y, 1120, 64, { fill: j % 2 ? C.night : C.panel, stroke: C.stone, sw: .6 }));
+      b.push(T(95, y + 38, r[0], { fill: C.ivory, size: 11 }));
+      r[1].forEach(function (v, i) {
+        var cx = x0 + i * 270 + 120;
+        b.push(R(cx - 15, y + 17, 30, 30, { fill: v ? (i === 2 ? C.rambam : C.water) : "url(#rHatch)", stroke: v ? C.ivory : C.danger, sw: 1.2 }));
+        b.push(T(cx, y + 39, v ? "✓" : "—", { fill: v ? C.ivory : C.dangerLt, size: 13, anchor: "middle" }));
+      });
+    });
+    b.push(T(80, 645, "PARALLELE ODER OFFENE WERTE · NICHT MITTELN", { fill: C.dangerLt, size: 12, ls: "1" }));
+    var conflicts = [
+      ["Umgrenzung", "500 Kanim ∥ 500 Amot"], ["Kernbau N–S", "100 ∥ 70 Amot"],
+      ["Trennzone", "1 ∥ 1 ∥ 2 Amot"], ["Seitenkammern", "33 ∥ 38 · Breite 4 ∥ 6"]
+    ];
+    conflicts.forEach(function (r, i) {
+      var x = 70 + (i % 2) * 565, y = 680 + Math.floor(i / 2) * 105;
+      b.push(R(x, y, 530, 80, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.4, rx: 7 }));
+      b.push(T(x + 20, y + 30, r[0], { fill: C.dangerLt, size: 11 }));
+      b.push(T(x + 265, y + 57, r[1], { fill: C.ivory, size: 12, anchor: "middle" }));
+    });
+    return shell(card, {
+      W: W, H: H, artLabel: "Drei Quellenschichten · Ankermatrix", body: b.join(""),
+      unitNote: "A/B/C nur zeilenweise verglichen · Einheiten und Ebenen getrennt",
+      legend: [[C.waterLt, "A/B-Anker", "gleiche Maßzeile belegt"], [C.rambam, "C-Anker", "Ramchal ausdrücklich beteiligt"], [C.danger, "parallel/offen", "keine Mittelung oder Gesamtidentität"]],
+      nicht: ["verschmolzener Gesamtplan", "Mittelwerte paralleler Angaben", "Ebene D als Textmaß", "Auflösung von Raschi/Radaks Nichtwissen"],
+      foot: "Eine Tavnit als Arbeitsordnung · Quellen bleiben transparent und getrennt"
+    });
+  }
+
+  /* ══════════ 28 · Karte 37: unverzichtbare Baukörper ══════════ */
+  function baukoerperordnung(card) {
+    var W = 1240, H = 1020, b = [];
+    b.push(T(80, 166, "RÄUMLICHE ORDNUNG · AUF DIESER KARTE OHNE MASSZAHLEN", { fill: C.stoneLt, size: 13, ls: "1" }));
+    b.push(R(125, 215, 990, 545, { fill: "url(#rHatch)", stroke: C.danger, sw: 2, rx: 12 }));
+    b.push(T(150, 250, "עֲזָרָה · ASARAH", { fill: C.dangerLt, size: 15, font: HE }));
+    b.push(T(150, 276, "Pflichtumfassung ringsum · Abstand zum Heichal offen", { fill: C.muted, size: 10 }));
+    var rooms = [
+      [760, 385, 220, 180, "אוּלָם", "Ulam · vor dem Kodesch"],
+      [510, 385, 220, 180, "קֹדֶשׁ", "Kodesch · mittlere Raumklasse"],
+      [260, 385, 220, 180, "קֹדֶשׁ הַקֳּדָשִׁים", "innerste Raumklasse"]
+    ];
+    rooms.forEach(function (r, i) {
+      b.push(R(r[0], r[1], r[2], r[3], { fill: C.panel, stroke: i === 2 ? C.rambam : C.stoneLt, sw: 2, rx: 7 }));
+      b.push(T(r[0] + 110, r[1] + 70, r[4], { fill: C.ivory, size: 18, font: HE, anchor: "middle" }));
+      b.push(T(r[0] + 110, r[1] + 107, r[5], { fill: C.muted, size: 10, anchor: "middle" }));
+    });
+    b.push(L(230, 350, 1010, 350, C.stoneLt, 1.5));
+    b.push(T(620, 335, "HEICHAL · gemeinsamer Name für die drei Raumklassen", { fill: C.stoneLt, size: 12, anchor: "middle" }));
+    [[160, 610], [980, 610], [160, 315], [980, 315]].forEach(function (p, i) {
+      b.push(R(p[0], p[1], 105, 60, { fill: C.panel, stroke: C.water, sw: 1.3, dash: "5 4" }));
+      b.push(T(p[0] + 52.5, p[1] + 36, i < 2 ? "Lischkah" : "innere Grenze", { fill: C.waterLt, size: 9, anchor: "middle" }));
+    });
+    b.push(T(620, 715, "Lischkot und innere Grenzen gehören in die Asarah · Zahl und genaue Lage offen", { fill: C.waterLt, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Baukörperordnung · Pflichtklassen", body: b.join(""),
+      unitNote: "Ohne Maßstab · nur Zugehörigkeit, Reihenfolge und Umfassung",
+      legend: [[C.stoneLt, "Heichal", "Ulam + Kodesch + Kodesch HaKodaschim"], [C.danger, "Asarah", "Pflichtumfassung, Abstand offen"], [C.waterLt, "Ergänzungen", "innere Grenzen und Lischkot"]],
+      nicht: ["Raummaße aus Detailkarten", "Abstand Asarah–Heichal", "Anzahl und Position der Lischkot", "Gestalt der inneren Grenzen"],
+      foot: "Unverzichtbare Bauklassen · räumliche Hierarchie, kein Detailgrundriss"
+    });
+  }
+
+  /* ══════════ 29 · Karte 38: Stein- und Bearbeitungsordnung ══════════ */
+  function steinordnung(card) {
+    var W = 1240, H = 1080, b = [];
+    function node(x, y, w, h, title, sub, col, dash) {
+      b.push(R(x, y, w, h, { fill: C.panel, stroke: col, sw: 1.8, rx: 8, dash: dash }));
+      b.push(T(x + w / 2, y + 36, title, { fill: C.ivory, size: 13, anchor: "middle" }));
+      b.push(T(x + w / 2, y + 65, sub, { fill: col, size: 10, anchor: "middle" }));
+    }
+    b.push(T(80, 166, "MATERIALWAHL UND BEARBEITUNGSWEG · KEINE STEINFORMATE", { fill: C.stoneLt, size: 13, ls: "1" }));
+    node(70, 230, 270, 105, "GROSSE, GANZE STEINE", "Pflicht · Größe/Toleranz offen", C.stoneLt);
+    node(70, 385, 270, 105, "ZIEGEL", "Alternative nur bei fehlenden Steinen", C.waterLt, "6 5");
+    b.push(L(340, 282, 445, 282, C.stoneLt, 3));
+    b.push(L(340, 437, 405, 437, C.waterLt, 2, "6 5"));
+    b.push(L(405, 437, 445, 282, C.waterLt, 2, "6 5"));
+    node(445, 230, 300, 145, "BEARBEITUNG AUSSERHALB", "spalten und glätten · Distanz offen", C.rambam);
+    b.push(T(595, 342, "Eisenwerkzeug nur im Kommentar ausdrücklich", { fill: C.muted, size: 9, anchor: "middle" }));
+    b.push(L(745, 302, 850, 302, C.rambam, 3));
+    b.push('<path d="M850 302 l-14 -7 l4 14 z" fill="' + C.rambam + '"/>');
+    node(850, 230, 320, 145, "EINBRINGEN IN HEICHAL / ASARAH", "fertige, zweckgebundene Bauteile", C.stoneLt);
+
+    node(70, 570, 330, 120, "BESCHÄDIGTER STEIN", "untauglich · verwahren · nicht auslösen", C.dangerLt, "6 5");
+    node(455, 570, 330, 120, "FREMDE ZWECKBINDUNG", "für Synagoge gebrochen → hier nicht verbauen", C.dangerLt, "6 5");
+    node(840, 570, 330, 120, "MIZBEACH / KEWESCH", "Eisenkontakt-Verbot · eigene begrenzte Regel", C.waterLt);
+    b.push(L(420, 540, 420, 720, C.danger, 1.5, "5 5"));
+    b.push(L(805, 540, 805, 720, C.danger, 1.5, "5 5"));
+    b.push(R(70, 760, 1100, 82, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.4 }));
+    b.push(T(620, 793, "Nicht verallgemeinern", { fill: C.dangerLt, size: 13, anchor: "middle" }));
+    b.push(T(620, 819, "Mizbeach-Herkunfts- und Eisenregeln werden nicht auf alle Haussteine übertragen.", { fill: C.ivory, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Steinordnung · Material- und Bearbeitungsweg", body: b.join(""),
+      unitNote: "Keine Maßzahl · Pflicht, Alternative, Bearbeitungsort und Abgrenzung",
+      legend: [[C.stoneLt, "Pflichtweg", "große ganze Steine · außen bearbeiten"], [C.waterLt, "Alternative/Abgrenzung", "Ziegel oder eigene Mizbeach-Regel"], [C.danger, "untauglich", "beschädigt oder fremd zweckgebunden"]],
+      nicht: ["Steinformat und Toleranzmaß", "Distanz des Bearbeitungsorts", "Werkzeugsatz im Grundtext", "Übertragung der Mizbeach-Regeln"] ,
+      foot: "Bauhalacha als Ablauf- und Geltungsschema · kein Mauerverband"
+    });
+  }
+
+  /* ══════════ 30 · Karte 39: Holzreichweite · zwei Lesarten ══════════ */
+  function holzreichweite(card) {
+    var W = 1240, H = 1060, b = [];
+    var zones = ["Har HaBajit", "Ezrat Naschim", "Scha'ar Nikanor", "Ezrat Kohanim → innen"];
+    function plan(y, title, raavad) {
+      b.push(T(80, y - 26, title, { fill: raavad ? C.waterLt : C.rambam, size: 12 }));
+      zones.forEach(function (z, i) {
+        var x = 80 + i * 270;
+        var forbid = raavad ? i === 3 : i >= 1;
+        b.push(R(x, y, 240, 115, { fill: forbid ? "url(#rHatch)" : C.panel, stroke: forbid ? C.danger : C.stone, sw: 1.5, rx: 7, dash: !raavad && i === 1 ? "6 5" : "" }));
+        b.push(T(x + 120, y + 43, z, { fill: C.ivory, size: 11, anchor: "middle" }));
+        b.push(T(x + 120, y + 76, forbid ? (raavad ? "Holzverbot" : "Reichweite im Wortlaut offen") : "außerhalb / erlaubt", { fill: forbid ? C.dangerLt : C.muted, size: 9, anchor: "middle" }));
+      });
+      b.push(L(80 + 3 * 270 - 15, y - 10, 80 + 3 * 270 - 15, y + 135, C.waterLt, 2));
+      b.push(T(80 + 3 * 270 - 15, y + 151, "Nikanor-Grenze", { fill: C.waterLt, size: 9, anchor: "middle" }));
+    }
+    b.push(T(80, 166, "HERVORTRETENDES HOLZ · REICHWEITE STRITTIG, REGEL NICHT BESTRITTEN", { fill: C.stoneLt, size: 13, ls: ".8" }));
+    plan(235, "RAMBAM · „IN IHM“ / „GANZE ASARAH“ · ÄUSSERER GRENZPUNKT OFFEN", false);
+    plan(500, "RA'AVAD · AB SCHA'AR NIKANOR NACH INNEN · AUSSEN AUSDRÜCKLICH ERLAUBT", true);
+    b.push(R(80, 775, 1060, 90, { fill: C.panel, stroke: C.stone, sw: 1.4 }));
+    b.push(T(110, 807, "BAUSTOFFALTERNATIVEN", { fill: C.stoneLt, size: 11 }));
+    b.push(T(330, 807, "Bauflächen: Stein oder Ziegel und Kalk", { fill: C.ivory, size: 11 }));
+    b.push(T(330, 836, "Achsadraot: Stein oder Ziegel · Kalk im zweiten Satz nicht genannt", { fill: C.muted, size: 10 }));
+    b.push(L(800, 792, 800, 850, C.danger, 1.5, "5 5"));
+    b.push(T(825, 823, "Jechezkel-Holz = andere Quellenebene", { fill: C.dangerLt, size: 10 }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Holzreichweite · Geltungsvergleich", body: b.join(""),
+      unitNote: "Ohne Maßstab · zwei Geltungslesarten, keine Entscheidung",
+      legend: [[C.rambam, "Rambam", "Wortlaut mit offenem äußeren Grenzpunkt"], [C.waterLt, "Ra'avad", "Nikanor → innen verboten"], [C.danger, "Schraffur", "Bereich des Holzverbots bzw. der Streitfrage"]],
+      nicht: ["Entscheidung zwischen den Lesarten", "Verbot jedes Holzes", "Maße der Achsadraot", "Auflösung der Jechezkel-Ebene"] ,
+      foot: "Hervortretendes Holz · Reichweitenvergleich, keine Grundrisskoordinate"
+    });
+  }
+
+  /* ══════════ 31 · Karte 40: Pflasterpflicht und Hiddur ══════════ */
+  function pflasterhiddur(card) {
+    var W = 1240, H = 1080, b = [];
+    b.push(T(80, 166, "PFLICHTZUSTAND UND HIDDUR-STUFEN · KEINE FORMATE ODER GOLDMENGEN", { fill: C.stoneLt, size: 13, ls: ".8" }));
+    b.push(R(80, 220, 560, 430, { fill: C.panel, stroke: C.stoneLt, sw: 2, rx: 9 }));
+    b.push(T(105, 255, "PFLICHT · GESAMTE ASARAH GEPFLASTERT", { fill: C.stoneLt, size: 12 }));
+    b.push(R(145, 305, 420, 245, { fill: "url(#rHatchQ)", stroke: C.waterLt, sw: 2 }));
+    b.push(T(355, 415, "kostbare Steine", { fill: C.ivory, size: 15, anchor: "middle" }));
+    b.push(T(355, 445, "Format · Muster · Dicke · Schichten offen", { fill: C.muted, size: 10, anchor: "middle" }));
+    b.push(R(455, 485, 68, 52, { fill: C.danger, stroke: C.dangerLt, sw: 2, dash: "5 4" }));
+    b.push(T(489, 573, "gelöst = untauglich, auch am Ort", { fill: C.dangerLt, size: 10, anchor: "middle" }));
+    b.push(T(355, 610, "offene Stelle: dort keine ordnungsgemäße Verrichtung", { fill: C.ivory, size: 10, anchor: "middle" }));
+
+    b.push(R(700, 220, 470, 430, { fill: C.panel, stroke: C.rambam, sw: 2, rx: 9 }));
+    b.push(T(725, 255, "BAULICHER HIDDUR · NACH KRAFT DER GEMEINSCHAFT", { fill: C.rambam, size: 11 }));
+    var tiers = [
+      ["Pflicht", "Pflaster + fester Zustand", C.stoneLt],
+      ["Hiddur I", "stärken + erhöhen · Zielhöhe offen", C.waterLt],
+      ["Hiddur II", "verschönern + verzieren · Umfang offen", C.rambam],
+      ["Hiddur III", "vergolden, wenn möglich · Fläche/Stärke offen", "#D6B95F"]
+    ];
+    tiers.forEach(function (z, i) {
+      var y = 300 + i * 76, w = 265 + i * 45;
+      b.push(R(740, y, w, 56, { fill: i === 3 ? "url(#rHatchQ)" : C.night, stroke: z[2], sw: 1.5, rx: 5 }));
+      b.push(T(758, y + 24, z[0], { fill: z[2], size: 10 }));
+      b.push(T(758, y + 44, z[1], { fill: C.ivory, size: 9 }));
+    });
+    b.push(R(80, 720, 1090, 100, { fill: C.night, stroke: C.danger, sw: 1.4, dash: "6 5" }));
+    b.push(T(625, 755, "Vergoldungsreferenz", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(625, 786, "Haus mit Gold überzogen · ausdrücklich nicht hinter den Türen · keine Goldfläche abgeleitet", { fill: C.ivory, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Pflaster und Hiddur · Zustandsordnung", body: b.join(""),
+      unitNote: "Keine Maßzahl · Pflichtzustand und drei bedingte Hiddur-Stufen",
+      legend: [[C.stoneLt, "Pflicht", "ganze Asarah · fest verankert"], [C.waterLt, "Hiddur", "Steigerung nach Kraft der Gemeinschaft"], [C.danger, "offen/untauglich", "gelöster Stein oder unbestimmte Ausführung"]],
+      nicht: ["Steinformat und Verlegemuster", "Zielhöhe", "Verzierungsflächen", "Goldstärke und Goldfläche"] ,
+      foot: "Hofpflaster und Hiddur · Normstufen, kein Ausführungsdetail"
+    });
+  }
+
+  /* ══════════ 32 · Karte 41: Fenster, Türen und Oberflächen ══════════ */
+  function oberflaechen(card) {
+    var W = 1240, H = 1100, b = [];
+    b.push(T(80, 166, "JECHESKEL 41 · BESTANDTEILE BELEGT, DIMENSIONEN OFFEN", { fill: C.stoneLt, size: 13, ls: "1" }));
+    b.push(R(100, 220, 760, 500, { fill: C.panel, stroke: C.stoneLt, sw: 2, rx: 10 }));
+    b.push(T(480, 255, "HAUSOBERFLÄCHEN · SCHEMATISCH", { fill: C.stoneLt, size: 11, anchor: "middle" }));
+    b.push(R(190, 310, 580, 320, { fill: C.night, stroke: C.stone, sw: 5 }));
+    b.push(R(215, 335, 530, 270, { fill: "url(#rHatchQ)", stroke: C.water, sw: 1.5 }));
+    b.push(T(480, 455, "Holzverkleidung ringsum", { fill: C.waterLt, size: 13, anchor: "middle" }));
+    b.push(T(480, 485, "Stärke und genaue Flächen offen", { fill: C.muted, size: 10, anchor: "middle" }));
+    [275, 390, 570, 685].forEach(function (x) {
+      b.push(R(x, 355, 54, 42, { fill: C.panel, stroke: C.danger, sw: 1.4, dash: "5 4" }));
+    });
+    b.push(T(480, 420, "Fenster ringsum · Bedeutung und Maße offen", { fill: C.dangerLt, size: 10, anchor: "middle" }));
+    b.push(R(395, 530, 170, 100, { fill: C.panel, stroke: C.ivory, sw: 2 }));
+    b.push(L(480, 530, 480, 630, C.ivory, 1.5));
+    b.push(T(480, 662, "2 Türen · je 2 wendende Teile · keine Dimension", { fill: C.ivory, size: 10, anchor: "middle" }));
+    b.push(L(220, 505, 740, 505, C.rambam, 4, "8 5"));
+    b.push(T(480, 520, "Ornamentband: Boden bis über Öffnung · Größe offen", { fill: C.rambam, size: 9, anchor: "middle" }));
+
+    b.push(R(910, 220, 260, 220, { fill: C.panel, stroke: C.waterLt, sw: 1.7, rx: 8 }));
+    b.push(T(1040, 258, "ULAM-FRONT", { fill: C.waterLt, size: 11, anchor: "middle" }));
+    b.push(R(960, 315, 160, 18, { fill: C.bronze, stroke: C.stoneLt, sw: 1.5 }));
+    b.push(T(1040, 365, "Holzbauteil belegt", { fill: C.ivory, size: 11, anchor: "middle" }));
+    b.push(T(1040, 392, "Form und Maß offen", { fill: C.dangerLt, size: 10, anchor: "middle" }));
+    b.push(R(910, 485, 260, 135, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.7, rx: 8 }));
+    b.push(T(1040, 525, "TÜRPFOSTEN", { fill: C.dangerLt, size: 11, anchor: "middle" }));
+    b.push(T(1040, 558, "מְזוּזַת רְבֻעָה", { fill: C.ivory, size: 15, font: HE, anchor: "middle" }));
+    b.push(T(1040, 590, "Bedeutung nicht abschließend", { fill: C.muted, size: 9, anchor: "middle" }));
+    b.push(R(100, 785, 1070, 72, { fill: C.night, stroke: C.danger, sw: 1.5, dash: "6 5" }));
+    b.push(T(635, 814, "Ausgeschlossen: Gegenstand 41:22 · 3 Amot hoch, 2 Amot lang", { fill: C.dangerLt, size: 11, anchor: "middle" }));
+    b.push(T(635, 841, "Der Vers nennt ihn Tisch; er ist kein Bauteil dieses Risses.", { fill: C.ivory, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Fenster, Türen und Oberflächen · Bestandsschema", body: b.join(""),
+      unitNote: "Jechezkel-Ebene ohne Baumaße · Stückzahlen nur bei Türen",
+      legend: [[C.waterLt, "Holzverkleidung", "ringsum · Stärke offen"], [C.danger, "Fenster/Pfosten", "Bedeutung oder Maß offen"], [C.ivory, "Türen", "2 · je 2 wendende Teile"]],
+      nicht: ["Türmaße aus Ebene B", "Fenstermaße", "Ornamentgrößen", "Gegenstand/Tisch aus 41:22"] ,
+      foot: "Jechezkel 41 · Bestandteile und Reichweiten, kein Fassadenentwurf"
+    });
+  }
+
+  /* ══════════ 33 · Karte 42: Zeit und Ordnung der Bauarbeit ══════════ */
+  function bauzeit(card) {
+    var W = 1240, H = 1060, b = [];
+    b.push(T(80, 166, "ZEITFENSTER, VERPFLICHTUNG UND AUSNAHMEN · KEIN BAUABLAUF", { fill: C.stoneLt, size: 13, ls: ".9" }));
+    b.push(T(80, 225, "TÄGLICHES ZEITFENSTER", { fill: C.stoneLt, size: 11 }));
+    b.push(R(80, 260, 170, 82, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.5 }));
+    b.push(T(165, 309, "Nacht · kein Bau", { fill: C.dangerLt, size: 11, anchor: "middle" }));
+    b.push(R(250, 260, 700, 82, { fill: C.panel, stroke: C.rambam, sw: 2 }));
+    b.push(T(600, 295, "Alot HaSchachar → Zet HaKochawim", { fill: C.ivory, size: 14, anchor: "middle" }));
+    b.push(T(600, 322, "keine Uhrzeit und keine Stundenzahl", { fill: C.muted, size: 10, anchor: "middle" }));
+    b.push(R(950, 260, 210, 82, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.5 }));
+    b.push(T(1055, 309, "Nacht · kein Bau", { fill: C.dangerLt, size: 11, anchor: "middle" }));
+    b.push(L(250, 245, 250, 356, C.stoneLt, 2));
+    b.push(L(950, 245, 950, 356, C.stoneLt, 2));
+
+    b.push(T(80, 420, "KREIS UND UMFANG DER VERPFLICHTUNG", { fill: C.stoneLt, size: 11 }));
+    var duties = [
+      ["ALLE", "Männer und Frauen", C.waterLt], ["PERSON", "eigene Mitwirkung", C.stoneLt],
+      ["VERMÖGEN", "materielle Beteiligung", C.rambam], ["SCHULKINDER", "nicht vom Lernen abziehen", C.dangerLt]
+    ];
+    duties.forEach(function (z, i) {
+      var x = 80 + i * 280;
+      b.push(R(x, 455, 245, 135, { fill: i === 3 ? "url(#rHatch)" : C.panel, stroke: z[2], sw: 1.7, rx: 8 }));
+      b.push(T(x + 122.5, 497, z[0], { fill: z[2], size: 12, anchor: "middle" }));
+      b.push(T(x + 122.5, 535, z[1], { fill: C.ivory, size: 11, anchor: "middle" }));
+      b.push(T(x + 122.5, 565, i === 3 ? "ausdrückliche Ausnahme" : "Pflicht", { fill: C.muted, size: 9, anchor: "middle" }));
+    });
+    b.push(R(80, 650, 520, 110, { fill: "url(#rHatch)", stroke: C.danger, sw: 1.5, rx: 8 }));
+    b.push(T(340, 690, "JOM TOV", { fill: C.dangerLt, size: 13, anchor: "middle" }));
+    b.push(T(340, 725, "Bau verdrängt den Feiertag nicht", { fill: C.ivory, size: 11, anchor: "middle" }));
+    b.push(R(650, 650, 510, 110, { fill: C.night, stroke: C.danger, sw: 1.5, dash: "6 5", rx: 8 }));
+    b.push(T(905, 690, "BAUZEIT UND BAUABLAUF", { fill: C.dangerLt, size: 12, anchor: "middle" }));
+    b.push(T(905, 725, "Dauer · Reihenfolge · Organisation nicht angegeben", { fill: C.ivory, size: 10, anchor: "middle" }));
+    return shell(card, {
+      W: W, H: H, artLabel: "Bauzeit · Regel- und Zeitfenster", body: b.join(""),
+      unitNote: "Tageszeitpunkte ohne Uhrzeit · Pflicht und Ausnahmen",
+      legend: [[C.rambam, "Bauzeit", "Alot HaSchachar bis Zet HaKochawim"], [C.waterLt, "Pflicht", "alle · Person und Vermögen"], [C.danger, "Sperre/Ausnahme", "Nacht · Jom Tov · Schulkinder"]],
+      nicht: ["Uhrzeiten und Stundenzahl", "Gesamtdauer", "Bauphasen und Reihenfolge", "praktische Organisationsform"] ,
+      foot: "Zeit und Ordnung der Bauarbeit · Normschema, kein Bauzeitenplan"
+    });
+  }
+
   /* ── öffentlich ── */
   var LABEL = {
     grundriss: "Grundriss", masstab: "Maßstabsleiter", flaechen: "Flächenvergleich",
@@ -1955,6 +2358,11 @@ var RISS = (function () {
     schiloachbecken: "Schiloach-Becken · Befundregister", schiloachweg: "Schiloach–Mikdasch · Wegbeziehung",
     schwellenwasser: "Wasser unter der Schwelle", viermessungen: "Vier Messstrecken",
     aufstiegsstrasse: "Aufstiegsstraße · Maßregister", entwaesserung: "Entwässerungskanal · Abschnitte",
+    suedzugang: "Südlicher Zugang · Schnittstelle", stadtmigrasch: "Stadt und Migrasch",
+    auslegermodelle: "Auslegermodelle · Quellenmatrix", quellenschichten: "Drei Quellenschichten",
+    baukoerperordnung: "Unverzichtbare Baukörper", steinordnung: "Stein- und Bearbeitungsordnung",
+    holzreichweite: "Holzreichweite · Geltungsvergleich", pflasterhiddur: "Pflaster und Hiddur",
+    oberflaechen: "Fenster, Türen und Oberflächen", bauzeit: "Bauzeit und Ordnung",
     visionsbezirk: "Visionsbezirk", referenzberg: "Referenzberg", terumah: "Terumat HaKodesch",
     bergtore: "Fünf Bergtore", azarah: "HaAzarah", hoehenstaffel: "Höhenstaffelung",
     torhaus: "Torhaus Jechezkels", haus100: "Haus 100", ulam: "Ulam",
@@ -1971,6 +2379,11 @@ var RISS = (function () {
                schiloachbecken: schiloachbecken, schiloachweg: schiloachweg,
                schwellenwasser: schwellenwasser, viermessungen: viermessungen,
                aufstiegsstrasse: aufstiegsstrasse, entwaesserung: entwaesserung,
+               suedzugang: suedzugang, stadtmigrasch: stadtmigrasch,
+               auslegermodelle: auslegermodelle, quellenschichten: quellenschichten,
+               baukoerperordnung: baukoerperordnung, steinordnung: steinordnung,
+               holzreichweite: holzreichweite, pflasterhiddur: pflasterhiddur,
+               oberflaechen: oberflaechen, bauzeit: bauzeit,
                visionsbezirk: visionsbezirk, referenzberg: referenzberg, terumah: terumah,
                bergtore: bergtore, azarah: azarah, hoehenstaffel: hoehenstaffel,
                torhaus: torhaus, haus100: haus100, ulam: ulam, heichal: heichal, debir: debir }[t];
@@ -2293,6 +2706,131 @@ var RISS = (function () {
       S.nicht = ["einheitlicher Gesamtquerschnitt", "Gesamtverlauf und Gefälle", "hydraulische Leistung", "Gleichsetzung der Wassersysteme"];
       S.foot = "Entwässerungskanal · Abschnittsregister und Systemtrennung"
       return S;
+    }
+
+    if (t === "suedzugang") {
+      S.unit = "qualitative Schnittstelle · ohne gemeinsame Skala"; S.grid = 0; S.breite = 96; S.tiefe = 42; S.kompass = true;
+      S.boxes.push(box(0, 4, 0, 32, 30, 8, "offen", "Südmauer · Maße offen", "offen"));
+      S.boxes.push(box(7, 6, 0, 6, 26, 8.4, "tor", "Tor 1 · schematisch"));
+      S.boxes.push(box(20, 6, 0, 6, 26, 8.4, "tor", "Tor 2 · schematisch"));
+      S.boxes.push(box(48, 8, 0, 42, 10, .7, "fest", "südliche Annäherung · eigener Befund"));
+      S.boxes.push(box(48, 27, 0, 42, 8, .5, "offen", "Verbindung nicht angegeben", "offen"));
+      S.teiler = [40]; S.teilerLabel = "Verknüpfung nicht belegt";
+      S.notiz = ["Mauer/Tore und südliche Annäherung sind getrennte Quellenregister.", "Die Toröffnungen sind Zählzeichen; Breite, Höhe und Abstand sind nicht überliefert.", "Eine konkrete Trasse zu einem bestimmten Tor wird nicht konstruiert."];
+      S.nicht = ["Torbreiten und -höhen", "Abstände und Höhenprofil", "eindeutige Torzuordnung", "durchgehende Wegtrasse"];
+      S.foot = "Südlicher Zugang · quellengetrennte Schnittstelle"; return S;
+    }
+
+    if (t === "stadtmigrasch") {
+      S.unit = "Ammot · Stadt 4500, Migrasch 250"; S.grid = 250; S.breite = 5000; S.tiefe = 5000; S.kompass = true;
+      S.boxes.push(box(0, 0, -.5, 5000, 5000, .5, "zone", "Stadt + Migrasch · 5000 × 5000"));
+      S.boxes.push(box(250, 250, 0, 4500, 4500, .7, "fest", "Stadt · 4500 × 4500 Ammot"));
+      S.boxes.push(box(2240, 0, 0, 520, 250, 1.2, "tor", "12 Tore · Lage schematisch"));
+      S.notiz = ["Der 250-Ammot-Ring ist im Verhältnis zur Stadt maßstäblich.", "Die zwölf Tore sind nur als Anzahl belegt; ihre Verteilung wird nicht behauptet.", "Abweichende Auslegungen bleiben im 2D-Quellenvergleich getrennt."];
+      S.nicht = ["Mauerhöhe und -stärke", "Torbreiten und genaue Torlagen", "Straßennetz", "Gleichsetzung abweichender Auslegungen"];
+      S.foot = "Stadt und Migrasch · 5000 außen · 4500 Stadt · Ring 250 Ammot"; return S;
+    }
+
+    if (t === "auslegermodelle") {
+      S.unit = "Quellenmodelle · ohne Maßstab"; S.grid = 0; S.breite = 112; S.tiefe = 50;
+      ["Rambam", "Raschi", "Radak", "Gra", "Ramchal", "Malbim", "Weitere Lesart"].forEach(function (n, i) {
+        var x = (i % 4) * 28, y = Math.floor(i / 4) * 25;
+        S.boxes.push(box(x, y, 0, 22, 18, i === 0 ? 2.2 : .7, i === 0 ? "fest" : "offen", n + " · eigenes Modell", i === 0 ? "" : "offen"));
+      });
+      S.notiz = ["Jede Platte steht für ein eigenständiges Auslegungsmodell.", "Gleiche Plattengröße bedeutet ausdrücklich keine Maßgleichheit.", "Nur Aussagen derselben Quelle werden innerhalb eines Modells verbunden."];
+      S.nicht = ["Mischmodell", "gemeinsamer Maßstab", "erfundene Anschlussmaße", "räumliche Rangfolge"];
+      S.foot = "Auslegermodelle · sieben getrennte Lesarten"; return S;
+    }
+
+    if (t === "quellenschichten") {
+      S.unit = "Quellenschichten · ohne Maßstab"; S.grid = 0; S.breite = 104; S.tiefe = 46;
+      ["A · Tanach", "B · Mischna/Rambam", "C · Auslegung"].forEach(function (n, i) {
+        S.boxes.push(box(i * 35, 2, i * .4, 29, 28, .8, i === 1 ? "fest" : "zone", n));
+      });
+      S.boxes.push(box(5, 36, 0, 24, 7, .5, "offen", "Konflikt offen", "offen"));
+      S.boxes.push(box(40, 36, 0, 24, 7, .5, "linie", "gemeinsamer Kern"));
+      S.boxes.push(box(75, 36, 0, 24, 7, .5, "offen", "Ergänzung getrennt", "offen"));
+      S.teiler = [32, 67]; S.teilerLabel = "Quelle getrennt";
+      S.notiz = ["Die drei Schichten sind Aussageebenen, keine Bauphasen.", "Übereinstimmung, Ergänzung und Konflikt bleiben getrennt.", "Das Schema erzeugt keine Maße oder Bauteilanschlüsse."];
+      S.nicht = ["chronologische Bauphasen", "gemeinsame Maßkette", "Harmonisierung", "erfundene Priorität"];
+      S.foot = "Eine Tavnit · drei Quellenebenen"; return S;
+    }
+
+    if (t === "baukoerperordnung") {
+      S.unit = "Baukörperordnung · Maße nicht angegeben"; S.grid = 0; S.breite = 92; S.tiefe = 58; S.kompass = true;
+      S.boxes.push(box(5, 5, -.5, 82, 48, .5, "boden", "Asarah · Größe offen"));
+      S.boxes.push(box(30, 17, 0, 32, 24, 12, "offen", "Mikdasch-Kern · Maße offen", "offen"));
+      S.boxes.push(box(35, 20, 0, 22, 18, 8, "fest", "Ulam · Heichal · Debir"));
+      S.boxes.push(box(5, 20, 0, 15, 13, 4, "zone", "Lischkot"));
+      S.boxes.push(box(72, 20, 0, 15, 13, 4, "zone", "Lischkot"));
+      S.notiz = ["Die Körper zeigen nur die unverzichtbare Gliederung, nicht ihre Abmessungen.", "Ulam, Heichal und Debir bleiben als benannte Kernfolge zusammen.", "Zahl, Größe und genaue Lage der Lischkot bleiben offen."];
+      S.nicht = ["Kantenlängen und Höhen", "Lischkot-Anzahl und -lage", "Mauer- und Torabmessungen", "Ausführungsplan"];
+      S.foot = "Ikrei HaBinjan · notwendige Baukörper, bewusst unbemaßt"; return S;
+    }
+
+    if (t === "steinordnung") {
+      S.unit = "Arbeits- und Quellenfolge · ohne Maßstab"; S.grid = 0; S.breite = 108; S.tiefe = 44;
+      S.boxes.push(box(0, 4, 0, 23, 20, 3, "fest", "große Steine · außen bearbeiten"));
+      S.boxes.push(box(29, 4, 0, 23, 20, 3, "linie", "transportieren"));
+      S.boxes.push(box(58, 4, 0, 23, 20, 3, "zone", "einsetzen · innen kein Eisen"));
+      S.boxes.push(box(87, 4, 0, 21, 20, 3, "offen", "Verband offen", "offen"));
+      S.boxes.push(box(16, 33, 0, 31, 8, .6, "offen", "alternative Auslegung", "offen"));
+      S.boxes.push(box(61, 33, 0, 31, 8, .6, "offen", "nicht behauptete Rekonstruktion", "offen"));
+      S.notiz = ["Dargestellt ist eine Arbeitsfolge, kein Mauerverband.", "Bearbeitung außerhalb und Eisenverbot innerhalb bleiben logisch getrennt.", "Alternative Lesarten werden nicht in den Hauptablauf gemischt."];
+      S.nicht = ["Steinmaße und Stückzahl", "Mauerverband", "Werkzeugform", "Transporttechnik"];
+      S.foot = "Große Steine · Bearbeitungsordnung und offener Verband"; return S;
+    }
+
+    if (t === "holzreichweite") {
+      S.unit = "Geltungsbereiche · ohne Maßstab"; S.grid = 0; S.breite = 106; S.tiefe = 44;
+      S.boxes.push(box(0, 3, 0, 48, 34, .7, "fest", "Rambam · Holzverbot umfassend"));
+      S.boxes.push(box(58, 3, 0, 48, 34, .7, "zone", "Raavad · eingeschränkter Bereich"));
+      S.boxes.push(box(12, 13, .7, 24, 14, 1.2, "offen", "Reichweite umfassend", "offen"));
+      S.boxes.push(box(69, 13, .7, 26, 14, 1.2, "linie", "Nikanor-Bezug · getrennt"));
+      S.teiler = [53]; S.teilerLabel = "Auslegung getrennt";
+      S.notiz = ["Die zwei Höfe sind Geltungsdiagramme, keine maßstäblichen Grundrisse.", "Rambam und Raavad bleiben eigenständige Rechtsmodelle.", "Ein hervortretendes Holzelement wird nur als Begriff markiert."];
+      S.nicht = ["Holzquerschnitte", "Hofabmessungen", "Mischung beider Modelle", "konkretes Tragwerk"];
+      S.foot = "Etz Bolet · Reichweitenvergleich zweier Auslegungen"; return S;
+    }
+
+    if (t === "pflasterhiddur") {
+      S.unit = "Pflaster- und Hiddur-Schema · ohne Maßstab"; S.grid = 0; S.breite = 104; S.tiefe = 58;
+      S.boxes.push(box(0, 0, 0, 66, 50, .6, "fest", "Ritzpah · gepflasterte Fläche"));
+      S.boxes.push(box(24, 17, .6, 15, 15, 2.2, "offen", "angehobener Stein · Prüfung", "offen"));
+      ["Material", "Bearbeitung", "Ordnung", "Schönheit / Hiddur"].forEach(function (n, i) {
+        S.boxes.push(box(75, i * 13, 0, 26, 9, .5 + i * .25, i === 3 ? "zone" : "linie", n));
+      });
+      S.teiler = [70]; S.teilerLabel = "Normstufe getrennt";
+      S.notiz = ["Die Pflasterfläche bleibt ungerastert, weil Plattenmaß und Verband fehlen.", "Der angehobene Stein zeigt nur den beschriebenen Prüfvorgang.", "Vier Hiddur-Stufen sind eine Begriffsordnung, keine Höhenstaffel."];
+      S.nicht = ["Plattenformat und Fugenraster", "Gesamtfläche und Dicke", "Unterbau", "numerische Hiddur-Stufen"];
+      S.foot = "Ritzpah und Hiddur · Fläche plus Qualitätsordnung"; return S;
+    }
+
+    if (t === "oberflaechen") {
+      S.unit = "Bauteilkatalog · Maße nicht angegeben"; S.grid = 0; S.breite = 108; S.tiefe = 52;
+      S.boxes.push(box(0, 5, 0, 44, 38, 14, "offen", "Hauskörper · Maße offen", "offen"));
+      S.boxes.push(box(4, 9, .3, 36, 30, 13.8, "zone", "Innenflächen / Verkleidung"));
+      S.boxes.push(box(12, 4, 4, 7, 2, 6, "tor", "Türflügel"));
+      S.boxes.push(box(25, 4, 6, 6, 1.5, 4, "wasser", "Fenster"));
+      S.boxes.push(box(60, 5, 0, 40, 16, 1, "linie", "Ulam-Element · getrennt"));
+      S.boxes.push(box(60, 30, 0, 40, 13, .6, "offen", "unbelegte Details ausgeschlossen", "offen"));
+      S.teiler = [52]; S.teilerLabel = "Bauteilquelle getrennt";
+      S.notiz = ["Fenster, Türen und Oberflächen sind Katalogzeichen, keine positionsgenaue Fassade.", "Der Hauskörper bleibt offen, da Maße und Öffnungsraster fehlen.", "Das Ulam-Element wird nicht unbelegt angeschlossen."];
+      S.nicht = ["Öffnungsmaße und Anzahl", "genaue Lage", "Materialdicken", "Fassadenrekonstruktion"];
+      S.foot = "Fenster, Türen und Oberflächen · Bauteilkatalog"; return S;
+    }
+
+    if (t === "bauzeit") {
+      S.unit = "Zeitordnung · keine Uhrzeiten"; S.grid = 0; S.breite = 108; S.tiefe = 48;
+      S.boxes.push(box(0, 4, 0, 48, 18, .8, "zone", "Tag · Alot bis Zet"));
+      S.boxes.push(box(60, 4, 0, 48, 18, .8, "offen", "Nacht · grundsätzlich kein Bau", "offen"));
+      S.boxes.push(box(0, 30, 0, 30, 12, .6, "fest", "Pflicht · alle"));
+      S.boxes.push(box(39, 30, 0, 30, 12, .6, "linie", "Person und Vermögen"));
+      S.boxes.push(box(78, 30, 0, 30, 12, .6, "offen", "Jom Tov / Schulkinder", "offen"));
+      S.teiler = [54]; S.teilerLabel = "Zeitfenster getrennt";
+      S.notiz = ["Tag und Nacht sind benannte Zeitfenster ohne Uhrzeit oder Dauermaß.", "Pflichtumfang und Ausnahmen sind Rechtsregeln, keine Bauphasen.", "Weder Reihenfolge noch Gesamtdauer werden konstruiert."];
+      S.nicht = ["Uhrzeiten und Stundenzahl", "Gesamtdauer", "Bauphasen", "praktische Organisation"];
+      S.foot = "Zeman weSeder · Zeitfenster, Pflicht und Ausnahmen"; return S;
     }
 
     if (t === "visionsbezirk") {
